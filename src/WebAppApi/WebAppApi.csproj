@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>6ef45b3b-3e26-4e38-a0e5-890cad23296b</UserSecretsId>
+    <AssemblyName>RecipeApi.WebAppApi</AssemblyName>
+    <RootNamespace>RecipeApi.WebAppApi</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
