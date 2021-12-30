@@ -4,6 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
+    <AssemblyName>RecipeApi.Infrastructure</AssemblyName>
+    <RootNamespace>RecipeApi.Infrastructure</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +14,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Persistence\Configurations\" />
+    <Folder Include="Persistence\Migrations\" />
   </ItemGroup>
 
 </Project>

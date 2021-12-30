@@ -4,6 +4,14 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
+    <AssemblyName>RecipeApi.Domain</AssemblyName>
+    <RootNamespace>RecipeApi.Domain</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\" />
+    <Folder Include="Entities\" />
+    <Folder Include="Enums\" />
+  </ItemGroup>
 
 </Project>
