@@ -7,6 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using RecipeApi.Application;
+using RecipeApi.Application.Adapters;
+using RecipeApi.Application.Common.Interfaces;
+using RecipeApi.Application.Common.Settings;
+using RecipeApi.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +37,17 @@ namespace WebAppApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAppApi", Version = "v1" });
             });
+            services.AddHttpClient<ISpoonAdapter, SpoonAdapter>(c =>
+            {
+                c.BaseAddress = new Uri("https://api.spoonacular.com/");
+                c.DefaultRequestHeaders.Add("Accept", "application/.json");
+            });
+
+            services.AddMemoryCache();
+            services.AddApplication();
+            services.AddInfrastructure(Configuration);
+
+            services.Configure<SpoonApiSettings>(Configuration.GetSection("SpoonAcular"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,7 +61,7 @@ namespace WebAppApi
             }
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
             app.UseRouting();
 
             app.UseAuthorization();
