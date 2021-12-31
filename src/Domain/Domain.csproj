@@ -8,10 +8,4 @@
     <RootNamespace>RecipeApi.Domain</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Entities\" />
-    <Folder Include="Enums\" />
-  </ItemGroup>
-
 </Project>
