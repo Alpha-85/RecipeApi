@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RecipeApi.Application.Common.Models.SpoonResponse;
 using RecipeApi.Application.Recipes.Queries.GetRandomRecipies;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RecipeApi.WebAppApi.Controllers;
@@ -28,7 +30,7 @@ public class RecipeController : ControllerBase
     /// <returns>List of random recipes</returns>
 
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<Recipe>),StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get([FromQuery] string mealType, string mainIngredient)
