@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Application.Common.Models.SpoonResponse;
 using RecipeApi.Domain.Enums;
 
@@ -6,15 +7,13 @@ namespace RecipeApi.Application.Recipes.Queries.GetRandomRecipies;
 
 public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<Recipe>>
 {
-    private readonly IMapper _mapper;
-    private readonly ISpoonAdapter _spoonAdapter;
-    private readonly IMemoryCachedRecipe _memoryCachedRecipe;
+    //private readonly IMapper _mapper;
+    private readonly IMemoryCachedRecipes _memoryCachedRecipe;
 
-    public GetRecipesHandler(IMapper mapper, ISpoonAdapter spoonAdapter, IMemoryCachedRecipe memoryCachedRecipe)
+    public GetRecipesHandler(IMemoryCachedRecipes memoryCachedRecipe)
     {
         _memoryCachedRecipe = memoryCachedRecipe ?? throw new ArgumentNullException(nameof(memoryCachedRecipe));
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        _spoonAdapter = spoonAdapter ?? throw new ArgumentNullException(nameof(spoonAdapter));
+        //_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
     public async Task<List<Recipe>> Handle(GetRecipesQuery query, CancellationToken cancellationToken)

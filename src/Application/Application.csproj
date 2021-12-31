@@ -21,11 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Adapters\" />
     <Folder Include="Common\Mappings\" />
-    <Folder Include="Common\Settings\" />
     <Folder Include="Recipes\Commands\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
