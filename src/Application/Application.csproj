@@ -24,7 +24,6 @@
     <Folder Include="Adapters\" />
     <Folder Include="Common\Interfaces\" />
     <Folder Include="Common\Mappings\" />
-    <Folder Include="Common\Models\" />
     <Folder Include="Common\Settings\" />
     <Folder Include="Recipes\" />
     <Folder Include="Services\" />
