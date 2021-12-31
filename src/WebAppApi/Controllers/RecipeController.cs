@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RecipeApi.Application.Recipes.Queries.GetRandomRecipies;
+using System;
 using System.Threading.Tasks;
 
 namespace RecipeApi.WebAppApi.Controllers;
@@ -13,8 +15,8 @@ public class RecipeController : ControllerBase
     private readonly ILogger<RecipeController> _logger;
     public RecipeController(IMediator mediator, ILogger<RecipeController> logger)
     {
-        _mediator = mediator;
-        _logger = logger;
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
 
@@ -28,14 +30,15 @@ public class RecipeController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get([FromQuery] string mealType, string mainIngredient)
     {
 
-        //var recipeList = await _mediator.Send(new GetRecipesQuery(mealType, mainIngredient));
+        var recipeList = await _mediator.Send(new GetRecipesQuery(mealType, mainIngredient));
 
-        //if (recipeList is null)
-        //    return NotFound();
+        if (recipeList is null)
+            return NotFound();
 
-        //return Ok(recipeList);
+        return Ok(recipeList);
     }
 }
