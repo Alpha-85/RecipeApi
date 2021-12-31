@@ -4,5 +4,5 @@ namespace RecipeApi.Application.Common.Interfaces;
 
 public interface ISpoonAdapter
 {
-    Task<RecipeList> GetRandomRecipesAsync(string query);
+    Task<List<Recipe>> GetRandomRecipesAsync(string query);
 }
