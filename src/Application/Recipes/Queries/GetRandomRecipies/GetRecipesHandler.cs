@@ -18,12 +18,18 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<Recipe>>
 
     public async Task<List<Recipe>> Handle(GetRecipesQuery query, CancellationToken cancellationToken)
     {
-        if (!Enum.TryParse<IngredientType>(query.MainIngredient, ignoreCase: true, out var ingredientType))
-            return null;
+        var isValidEnum = Enum.TryParse(
+            query.MainIngredient,
+            true,
+            out IngredientType parsedIngredient)
+            && Enum.IsDefined(typeof(IngredientType), parsedIngredient);
 
-        var collectedQuery = string.Join(",", query.MainIngredient, query.MealType);
+           if(isValidEnum is false) return new List<Recipe>();
 
-        var content = await _memoryCachedRecipe.GetCachedRecipes(ingredientType, collectedQuery);
+
+        var collectedQuery = string.Join(",", query.MainIngredient.ToLower(), query.MealType.ToLower());
+
+        var content = await _memoryCachedRecipe.GetCachedRecipes(parsedIngredient, collectedQuery);
 
 
         return content;
