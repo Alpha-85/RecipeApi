@@ -25,26 +25,6 @@ public class UserService : IUserService
         _appSettings = appSettings.Value;
     }
 
-    public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest model, string ipAddress, CancellationToken cancellationToken)
-    {
-        var user =  await _context.Users.Include(r => r.RefreshTokens).FirstOrDefaultAsync(x => x.UserName == model.Username,cancellationToken);
-
-        if (user == null || !BCryptNet.Verify(model.Password, user.PasswordHash))
-            return null;
-        
-        var jwtToken = _jwtService.GenerateJwtToken(user);
-
-        var refreshToken = _jwtService.GenerateRefreshToken(ipAddress);
-        user.RefreshTokens.Add(refreshToken);
-
-        RemoveOldRefreshTokens(user);
-
-        _context.Users.Update(user);
-        await _context.SaveChangesAsync(cancellationToken);
-
-        return new AuthenticateResponse(user, jwtToken, refreshToken.Token);
-    }
-
     public async Task<AuthenticateResponse> RefreshToken(string token, string ipAddress, CancellationToken cancellationToken)
     {
         var user = GetUserByRefreshToken(token);
@@ -52,7 +32,6 @@ public class UserService : IUserService
 
         if (refreshToken.IsRevoked)
         {
-            // revoke all descendant tokens in case this token has been compromised
             RevokeDescendantRefreshTokens(refreshToken, user, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
             _context.Users.Update(user);
             await _context.SaveChangesAsync(cancellationToken);
@@ -60,10 +39,10 @@ public class UserService : IUserService
 
         if (!refreshToken.IsActive)
             return null;
-            //throw new AppException("Invalid token");
+   
 
         // replace old refresh token with a new one (rotate token)
-        var newRefreshToken = RotateRefreshToken(refreshToken, ipAddress);
+        var newRefreshToken = await RotateRefreshToken(refreshToken, ipAddress,cancellationToken);
         user.RefreshTokens.Add(newRefreshToken);
 
         // remove old refresh tokens from user
@@ -74,7 +53,7 @@ public class UserService : IUserService
         await _context.SaveChangesAsync(cancellationToken);
 
         // generate new jwt
-        var jwtToken = _jwtService.GenerateJwtToken(user);
+        var jwtToken = await _jwtService.GenerateJwtToken(user,cancellationToken);
 
         return new AuthenticateResponse(user, jwtToken, newRefreshToken.Token);
     }
@@ -95,16 +74,6 @@ public class UserService : IUserService
         return true;
     }
 
-    
-    public async Task<string> HashUserPassword(string password, CancellationToken cancellationToken)
-    {
-       var hashedPassword = BCryptNet.HashPassword(password);
-        if (hashedPassword == null)
-            return null;
-
-        return hashedPassword;
-    }
-
     private User GetUserByRefreshToken(string token)
     {
         var user = _context.Users.SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
@@ -115,31 +84,16 @@ public class UserService : IUserService
         return user;
     }
 
-    //public IEnumerable<User> GetAll()
-    //{
-    //    return _context.Users;
-    //}
 
-    //public User GetById(int id)
-    //{
-    //    var user = _context.Users.Find(id);
-    //    if (user == null) throw new KeyNotFoundException("User not found");
-    //    return user;
-    //}
-
-    // helper methods
-
-
-    private RefreshToken RotateRefreshToken(RefreshToken refreshToken, string ipAddress)
+    private async Task<RefreshToken> RotateRefreshToken(RefreshToken refreshToken, string ipAddress,CancellationToken cancellationToken)
     {
-        var newRefreshToken = _jwtService.GenerateRefreshToken(ipAddress);
+        var newRefreshToken = await _jwtService.GenerateRefreshToken(ipAddress,cancellationToken);
         RevokeRefreshToken(refreshToken, ipAddress, "Replaced by new token", newRefreshToken.Token);
         return newRefreshToken;
     }
 
     private void RemoveOldRefreshTokens(User user)
     {
-        // remove old inactive refresh tokens from user based on TTL in app settings
         user.RefreshTokens.RemoveAll(x =>
             !x.IsActive &&
             x.Created.AddDays(_appSettings.RefreshTokenTTL) <= DateTime.UtcNow);

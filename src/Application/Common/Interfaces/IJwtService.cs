@@ -5,7 +5,7 @@ namespace RecipeApi.Application.Common.Interfaces;
 
 public interface IJwtService
 {
-    public string GenerateJwtToken(User user);
-    public int? ValidateJwtToken(string token);
-    public RefreshToken GenerateRefreshToken(string ipAddress);
+    Task<string> GenerateJwtToken(User user,CancellationToken cancellationToken);
+    Task<int?> ValidateJwtToken(string token, CancellationToken cancellationToken);
+    Task<RefreshToken> GenerateRefreshToken(string ipAddress, CancellationToken cancellationToken);
 }

@@ -91,29 +91,6 @@ public class UsersController : ControllerBase
     //    return Ok(new { message = "Token revoked" });
     //}
 
-    //[HttpGet]
-    //public async Task<IActionResult> GetAll()
-    //{
-    //    var users = _userService.GetAll();
-    //    return Ok(users);
-    //}
-
-    //[HttpGet("{id}")]
-    //public async Task<IActionResult> GetById(int id)
-    //{
-    //    var user = _userService.GetById(id);
-    //    return Ok(user);
-    //}
-
-    //[HttpGet("{id}/refresh-tokens")]
-    //public async Task<IActionResult> GetRefreshTokens(int id)
-    //{
-    //    var user = _userService.GetById(id);
-    //    return Ok(user.RefreshTokens);
-    //}
-
-    //// helper methods
-
     private void SetTokenCookie(string token)
     {
         // append cookie with refresh token to the http response
@@ -127,7 +104,6 @@ public class UsersController : ControllerBase
 
     private string IpAddress()
     {
-        // get source ip address for the current request
         if (Request.Headers.ContainsKey("X-Forwarded-For"))
             return Request.Headers["X-Forwarded-For"];
         else
