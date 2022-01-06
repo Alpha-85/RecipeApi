@@ -36,11 +36,11 @@ public class RecipeController : ControllerBase
     public async Task<IActionResult> Get([FromQuery] string mealType, string mainIngredient)
     {
 
-        var recipeList = await _mediator.Send(new GetRecipesQuery(mealType, mainIngredient));
+        var response = await _mediator.Send(new GetRecipesQuery(mealType, mainIngredient));
 
-        if (recipeList is null)
+        if (response is null)
             return NotFound();
 
-        return Ok(recipeList);
+        return Ok(response);
     }
 }
