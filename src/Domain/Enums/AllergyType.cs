@@ -3,7 +3,7 @@ namespace RecipeApi.Domain.Enums;
 
 public enum AllergyType
 {
-    Nut,
+    Nut = 1,
     Milk,
     Shellfish,
     Gluten,

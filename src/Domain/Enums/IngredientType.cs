@@ -3,7 +3,7 @@ namespace RecipeApi.Domain.Enums;
 
 public enum IngredientType
 {
-    Fish,
+    Fish = 1,
     Pork,
     Beef,
     Plant,

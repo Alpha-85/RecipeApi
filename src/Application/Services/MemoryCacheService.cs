@@ -21,7 +21,7 @@ public class MemoryCacheService : IMemoryCacheService
     {
         List<Recipe> output;
 
-        output = _memory.Get<List<Recipe>>(mainIngredient);
+        output = _memory.Get<List<Recipe>>(mainIngredient.ToString());
 
         if (output is null)
         {
