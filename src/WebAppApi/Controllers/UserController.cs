@@ -1,76 +1,118 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RecipeApi.Application.Common.Models.Authentication;
+using RecipeApi.Application.Users.Commands;
+using RecipeApi.Application.Users.Queries.Authentication;
 using System;
+using System.Threading.Tasks;
 
 namespace RecipeApi.WebAppApi.Controllers;
 
 [Authorize]
 [ApiController]
-[Route("[controller]")]
+[Route("/api/v1/[controller]")]
 public class UsersController : ControllerBase
 {
-    private IUserService _userService;
 
-    public UsersController(IUserService userService)
+    private readonly IMediator _mediator;
+
+    public UsersController(IMediator mediator)
     {
-        _userService = userService;
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+
     }
+
+    /// <summary>
+    /// Authenticates a registered user
+    /// </summary>
+    /// <param name="username"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
 
     [AllowAnonymous]
     [HttpPost("authenticate")]
-    public IActionResult Authenticate(AuthenticateRequest model)
+    [ProducesResponseType(typeof(AuthenticateResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> AuthenticateUser(string username, string password)
     {
-        var response = _userService.Authenticate(model, ipAddress());
-        setTokenCookie(response.RefreshToken);
+        var response = await _mediator.Send(new AuthenticationQuery(username, password, IpAddress()));
+
+        if (response is null)
+            return NotFound();
+
+        SetTokenCookie(response.RefreshToken);
+
         return Ok(response);
     }
+
+    /// <summary>
+    /// Registers a new user
+    /// </summary>
+    /// <param name="username"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
 
     [AllowAnonymous]
-    [HttpPost("refresh-token")]
-    public IActionResult RefreshToken()
+    [HttpPost("register")]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string),StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> RegisterUser(string username, string password)
     {
-        var refreshToken = Request.Cookies["refreshToken"];
-        var response = _userService.RefreshToken(refreshToken, ipAddress());
-        setTokenCookie(response.RefreshToken);
-        return Ok(response);
+        var response = await _mediator.Send(new AddUserCommand(username, password));
+
+        if (response is false)
+            return BadRequest("Something went wrong");
+
+        return Ok();
     }
 
-    [HttpPost("revoke-token")]
-    public IActionResult RevokeToken(RevokeTokenRequest model)
-    {
-        // accept refresh token in request body or cookie
-        var token = model.Token ?? Request.Cookies["refreshToken"];
+    //[AllowAnonymous]
+    //[HttpPost("refresh-token")]
+    //public async Task<IActionResult> RefreshToken()
+    //{
+    //    var refreshToken = Request.Cookies["refreshToken"];
+    //    var response = _userService.RefreshToken(refreshToken, IpAddress());
+    //    SetTokenCookie(response.RefreshToken);
+    //    return Ok(response);
+    //}
 
-        if (string.IsNullOrEmpty(token))
-            return BadRequest(new { message = "Token is required" });
+    //[HttpPost("revoke-token")]
+    //public async Task<IActionResult> RevokeToken(RevokeTokenRequest model)
+    //{
+    //    // accept refresh token in request body or cookie
+    //    var token = model.Token ?? Request.Cookies["refreshToken"];
 
-        _userService.RevokeToken(token, ipAddress());
-        return Ok(new { message = "Token revoked" });
-    }
+    //    if (string.IsNullOrEmpty(token))
+    //        return BadRequest(new { message = "Token is required" });
 
-    [HttpGet]
-    public IActionResult GetAll()
-    {
-        var users = _userService.GetAll();
-        return Ok(users);
-    }
+    //    _userService.RevokeToken(token, IpAddress());
+    //    return Ok(new { message = "Token revoked" });
+    //}
 
-    [HttpGet("{id}")]
-    public IActionResult GetById(int id)
-    {
-        var user = _userService.GetById(id);
-        return Ok(user);
-    }
+    //[HttpGet]
+    //public async Task<IActionResult> GetAll()
+    //{
+    //    var users = _userService.GetAll();
+    //    return Ok(users);
+    //}
 
-    [HttpGet("{id}/refresh-tokens")]
-    public IActionResult GetRefreshTokens(int id)
-    {
-        var user = _userService.GetById(id);
-        return Ok(user.RefreshTokens);
-    }
+    //[HttpGet("{id}")]
+    //public async Task<IActionResult> GetById(int id)
+    //{
+    //    var user = _userService.GetById(id);
+    //    return Ok(user);
+    //}
 
-    // helper methods
+    //[HttpGet("{id}/refresh-tokens")]
+    //public async Task<IActionResult> GetRefreshTokens(int id)
+    //{
+    //    var user = _userService.GetById(id);
+    //    return Ok(user.RefreshTokens);
+    //}
+
+    //// helper methods
 
     private void SetTokenCookie(string token)
     {

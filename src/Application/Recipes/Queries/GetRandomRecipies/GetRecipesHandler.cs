@@ -8,9 +8,9 @@ namespace RecipeApi.Application.Recipes.Queries.GetRandomRecipies;
 public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<Recipe>>
 {
     //private readonly IMapper _mapper;
-    private readonly IMemoryCachedRecipes _memoryCachedRecipe;
+    private readonly IMemoryCacheService _memoryCachedRecipe;
 
-    public GetRecipesHandler(IMemoryCachedRecipes memoryCachedRecipe)
+    public GetRecipesHandler(IMemoryCacheService memoryCachedRecipe)
     {
         _memoryCachedRecipe = memoryCachedRecipe ?? throw new ArgumentNullException(nameof(memoryCachedRecipe));
         //_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
