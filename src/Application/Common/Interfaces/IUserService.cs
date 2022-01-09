@@ -5,7 +5,7 @@ namespace RecipeApi.Application.Common.Interfaces;
 
 public interface IUserService
 {
-    Task<AuthenticateResponse> RefreshToken(string token, string ipAddress, CancellationToken cancellationToken);
-    Task<bool> RevokeToken(string token, string ipAddress, CancellationToken cancellationToken);
-    public User GetById(int id);
+    Task RevokeDescendantRefreshTokens(RefreshToken refreshToken, User user, string ipAddress, string reason);
+    Task<RefreshToken> RotateRefreshToken(RefreshToken refreshToken, string ipAddress, CancellationToken cancellationToken);
+    Task RemoveOldRefreshTokens(User user);
 }

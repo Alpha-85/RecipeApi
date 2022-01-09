@@ -68,15 +68,17 @@ public class UsersController : ControllerBase
         return Ok();
     }
 
-    //[AllowAnonymous]
-    //[HttpPost("refresh-token")]
-    //public async Task<IActionResult> RefreshToken()
-    //{
-    //    var refreshToken = Request.Cookies["refreshToken"];
-    //    var response = _userService.RefreshToken(refreshToken, IpAddress());
-    //    SetTokenCookie(response.RefreshToken);
-    //    return Ok(response);
-    //}
+    [AllowAnonymous]
+    [HttpPost("refresh-token")]
+    public async Task<IActionResult> RefreshToken(string refreshToken)
+    {
+        //var refreshToken = Request.Cookies["refreshToken"];
+
+        var response = await _mediator.Send(new RefreshTokenQuery(refreshToken, IpAddress()));
+
+        SetTokenCookie(response.RefreshToken);
+        return Ok(response);
+    }
 
     //[HttpPost("revoke-token")]
     //public async Task<IActionResult> RevokeToken(RevokeTokenRequest model)
