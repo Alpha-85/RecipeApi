@@ -7,4 +7,5 @@ public interface IUserService
 {
     Task<AuthenticateResponse> RefreshToken(string token, string ipAddress, CancellationToken cancellationToken);
     Task<bool> RevokeToken(string token, string ipAddress, CancellationToken cancellationToken);
+    public User GetById(int id);
 }
