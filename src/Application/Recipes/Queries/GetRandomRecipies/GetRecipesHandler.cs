@@ -27,7 +27,7 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<Recipe>>
            if(isValidEnum is false) return new List<Recipe>();
 
 
-        var collectedQuery = string.Join(",", query.MainIngredient.ToLower(), query.MealType.ToLower());
+        var collectedQuery = string.Join(",", query.MainIngredient, query.MealType);
 
         var content = await _memoryCachedRecipe.GetCachedRecipes(parsedIngredient, collectedQuery);
 

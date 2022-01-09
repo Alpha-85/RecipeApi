@@ -20,9 +20,9 @@ public class UserService : IUserService
         IJwtService jwtService,
         IOptions<AppSettings> appSettings)
     {
-        _context = context;
-        _jwtService = jwtService;
-        _appSettings = appSettings.Value;
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        _jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
+        _appSettings = appSettings.Value ?? throw new ArgumentNullException(nameof(appSettings));
     }
 
     public async Task<AuthenticateResponse> RefreshToken(string token, string ipAddress, CancellationToken cancellationToken)
@@ -81,6 +81,13 @@ public class UserService : IUserService
         //if (user == null)
         //    throw new AppException("Invalid token");
 
+        return user;
+    }
+
+    public User GetById(int id)
+    {
+        var user = _context.Users.Find(id);
+        if (user == null) throw new KeyNotFoundException("User not found");
         return user;
     }
 

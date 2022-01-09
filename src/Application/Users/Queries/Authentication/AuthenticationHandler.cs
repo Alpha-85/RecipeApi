@@ -1,22 +1,22 @@
 ﻿
 using MediatR;
-using RecipeApi.Application.Common.Interfaces;
-using RecipeApi.Application.Common.Models.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using RecipeApi.Application.Common.Interfaces;
+using RecipeApi.Application.Common.Models.Authentication;
 using RecipeApi.Application.Common.Settings;
 using RecipeApi.Domain.Entities;
 using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace RecipeApi.Application.Users.Queries.Authentication;
 
-public class AuthenticationHandler: IRequestHandler<AuthenticationQuery, AuthenticateResponse>
+public class AuthenticationHandler : IRequestHandler<AuthenticationQuery, AuthenticateResponse>
 {
     private readonly IApplicationDbContext _context;
     private readonly IJwtService _jwtService;
     private readonly AppSettings _appSettings;
 
-    public AuthenticationHandler(IApplicationDbContext context,IJwtService jwtService, IOptions<AppSettings> appSettings)
+    public AuthenticationHandler(IApplicationDbContext context, IJwtService jwtService, IOptions<AppSettings> appSettings)
     {
         _context = context ?? throw new ArgumentNullException(nameof(_context));
         _jwtService = jwtService ?? throw new ArgumentNullException(nameof(_jwtService));
@@ -30,9 +30,9 @@ public class AuthenticationHandler: IRequestHandler<AuthenticationQuery, Authent
         if (user == null || !BCryptNet.Verify(query.Password, user.PasswordHash))
             return null;
 
-        var jwtToken = await _jwtService.GenerateJwtToken(user,cancellationToken);
+        var jwtToken = await _jwtService.GenerateJwtToken(user, cancellationToken);
 
-        var refreshToken = await _jwtService.GenerateRefreshToken(query.IpAddress,cancellationToken);
+        var refreshToken = await _jwtService.GenerateRefreshToken(query.IpAddress, cancellationToken);
 
         user.RefreshTokens.Add(refreshToken);
 
