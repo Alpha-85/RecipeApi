@@ -16,7 +16,11 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 
 
     public DbSet<User> Users { get; set; }
-    
+    public DbSet<RecipeCollection> RecipeCollections { get; set; }
+    public DbSet<RecipeDay> RecipeDays { get; set; }
+    public DbSet<RecipeInformation> RecipeInformation { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
         foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
