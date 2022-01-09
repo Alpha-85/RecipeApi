@@ -13,6 +13,7 @@ public class User : AuditableEntity
 
     [JsonIgnore]
     public List<RefreshToken> RefreshTokens { get; set; }
+    public List<RecipeCollection> RecipeCollections { get; set; }
 
 }
 

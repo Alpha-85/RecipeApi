@@ -42,19 +42,14 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenQuery, Authentica
         if (!refreshToken.IsActive)
             return null;
 
-
-        // replace old refresh token with a new one (rotate token)
         var newRefreshToken = await _userService.RotateRefreshToken(refreshToken, request.IpAddress, cancellationToken);
         user.RefreshTokens.Add(newRefreshToken);
 
-        // remove old refresh tokens from user
         await _userService.RemoveOldRefreshTokens(user);
 
-        // save changes to db
         _context.Users.Update(user);
         await _context.SaveChangesAsync(cancellationToken);
 
-        // generate new jwt
         var jwtToken = await _jwtService.GenerateJwtToken(user, cancellationToken);
 
         return new AuthenticateResponse(user, jwtToken, newRefreshToken.Token);
