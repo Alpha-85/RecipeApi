@@ -18,16 +18,16 @@ public class SpoonAdapter : ISpoonAdapter
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _spoonApiSettings = settings ?? throw new ArgumentNullException(nameof(settings));
-        _spoonApiSettings = options.Value;
+        _spoonApiSettings = options.Value ?? throw new ArgumentNullException(nameof(options));
     }
 
     public async Task<List<Recipe>> GetRandomRecipesAsync(string query)
     {
         List<Recipe> list = new();
 
-        var url = $"{_spoonApiSettings.BaseUrl}/random?limitLicense=true&tags={query}&number=1&apiKey={_spoonApiSettings.ApiKey}";
-
-        var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, url);
+        var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
+            $"/recipes/random?limitLicense=true&tags={query}&number=1&apiKey={_spoonApiSettings.ApiKey}");
+        httpRequestMessage.Headers.Add("Accept", "application/json");
 
         var response = await _httpClient.SendAsync(httpRequestMessage);
 

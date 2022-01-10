@@ -9,10 +9,11 @@ public class User : AuditableEntity
     public string UserName { get; set; }
 
     [JsonIgnore]
-    public string Password { get; set; }
+    public string PasswordHash { get; set; }
 
     [JsonIgnore]
     public List<RefreshToken> RefreshTokens { get; set; }
+    public List<RecipeCollection> RecipeCollections { get; set; }
 
 }
 

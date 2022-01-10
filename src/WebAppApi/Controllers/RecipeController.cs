@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,12 +10,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RecipeApi.WebAppApi.Controllers;
+[Authorize]
 [ApiController]
-[Route("/api/v1[controller]")]
+[Route("/api/v1/[controller]")]
 public class RecipeController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly ILogger<RecipeController> _logger;
+
     public RecipeController(IMediator mediator, ILogger<RecipeController> logger)
     {
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
@@ -30,17 +33,17 @@ public class RecipeController : ControllerBase
     /// <returns>List of random recipes</returns>
 
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<Recipe>),StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<Recipe>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get([FromQuery] string mealType, string mainIngredient)
     {
 
-        var recipeList = await _mediator.Send(new GetRecipesQuery(mealType, mainIngredient));
+        var response = await _mediator.Send(new GetRecipesQuery(mealType, mainIngredient));
 
-        if (recipeList is null)
+        if (response is null)
             return NotFound();
 
-        return Ok(recipeList);
+        return Ok(response);
     }
 }

@@ -5,11 +5,11 @@ using RecipeApi.Domain.Enums;
 
 namespace RecipeApi.Application.Services;
 
-public class MemoryCachedRecipes : IMemoryCachedRecipes
+public class MemoryCacheService : IMemoryCacheService
 {
     private readonly IMemoryCache _memory;
     private readonly ISpoonAdapter _spoonAdapter;
-    public MemoryCachedRecipes(IMemoryCache memory, ISpoonAdapter spoonAdapter)
+    public MemoryCacheService(IMemoryCache memory, ISpoonAdapter spoonAdapter)
     {
         _memory = memory ?? throw new ArgumentNullException(nameof(memory));
         _spoonAdapter = spoonAdapter ?? throw new ArgumentNullException(nameof(spoonAdapter));
