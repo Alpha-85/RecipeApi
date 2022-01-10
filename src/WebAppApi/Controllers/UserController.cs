@@ -76,6 +76,9 @@ public class UsersController : ControllerBase
 
         var response = await _mediator.Send(new RefreshTokenQuery(refreshToken, IpAddress()));
 
+        if (response is null)
+            return BadRequest(new { message = "Something is wrong with RefreshToken" });
+
         SetTokenCookie(response.RefreshToken);
         return Ok(response);
     }

@@ -8,7 +8,23 @@ public class RecipeInformationConfiguration : IEntityTypeConfiguration<RecipeInf
 {
     public void Configure(EntityTypeBuilder<RecipeInformation> builder)
     {
-        // builder.HasMany(x => x.RecipeCollections).WithMany(x => x.RecipeDays);
+        builder.HasKey(x => x.Id);
+        builder.HasIndex(x => x.RecipeId);
+       
+        builder.Property(x => x.RecipeURL)
+            .HasMaxLength(100)
+            .IsRequired();
+        builder.Property(x => x.RecipeName)
+            .HasMaxLength(50)
+            .IsRequired();
+        builder.Property(x => x.RecipeId)
+            .IsRequired();
+        builder.Property(x => x.Time)
+            .IsRequired();
+        builder.Property(x => x.Image)
+            .IsRequired();
+        builder.Property(x => x.Mealtype)
+            .IsRequired();
 
     }
 }
