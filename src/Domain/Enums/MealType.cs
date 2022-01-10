@@ -3,7 +3,7 @@ namespace RecipeApi.Domain.Enums;
 
 public enum MealType
 {
-    Breakfast,
+    Breakfast = 1,
     Lunch,
     Dinner,
     Desert,

@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using RecipeApi.Application.Adapters;
+using RecipeApi.Application.Authorization;
 using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Application.Common.Settings;
 using RecipeApi.Application.Services;
@@ -15,8 +16,10 @@ public static class DependencyInjection
     {
         services.AddMediatR(Assembly.GetExecutingAssembly());
         services.AddScoped<SpoonApiSettings>();
-        services.AddScoped<IMemoryCachedRecipes, MemoryCachedRecipes>();
+        services.AddScoped<IMemoryCacheService, MemoryCacheService>();
         services.AddTransient<ISpoonAdapter, SpoonAdapter>();
+        services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IUserService, UserService>();
 
         return services;
     }

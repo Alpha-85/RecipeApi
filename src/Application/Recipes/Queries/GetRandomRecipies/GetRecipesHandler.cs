@@ -8,9 +8,9 @@ namespace RecipeApi.Application.Recipes.Queries.GetRandomRecipies;
 public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<Recipe>>
 {
     //private readonly IMapper _mapper;
-    private readonly IMemoryCachedRecipes _memoryCachedRecipe;
+    private readonly IMemoryCacheService _memoryCachedRecipe;
 
-    public GetRecipesHandler(IMemoryCachedRecipes memoryCachedRecipe)
+    public GetRecipesHandler(IMemoryCacheService memoryCachedRecipe)
     {
         _memoryCachedRecipe = memoryCachedRecipe ?? throw new ArgumentNullException(nameof(memoryCachedRecipe));
         //_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -18,12 +18,18 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<Recipe>>
 
     public async Task<List<Recipe>> Handle(GetRecipesQuery query, CancellationToken cancellationToken)
     {
-        if (!Enum.TryParse<IngredientType>(query.MainIngredient, ignoreCase: true, out var ingredientType))
-            return null;
+        var isValidEnum = Enum.TryParse(
+            query.MainIngredient,
+            true,
+            out IngredientType parsedIngredient)
+            && Enum.IsDefined(typeof(IngredientType), parsedIngredient);
+
+           if(isValidEnum is false) return new List<Recipe>();
+
 
         var collectedQuery = string.Join(",", query.MainIngredient, query.MealType);
 
-        var content = await _memoryCachedRecipe.GetCachedRecipes(ingredientType, collectedQuery);
+        var content = await _memoryCachedRecipe.GetCachedRecipes(parsedIngredient, collectedQuery);
 
 
         return content;
