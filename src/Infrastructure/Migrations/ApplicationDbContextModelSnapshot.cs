@@ -31,12 +31,13 @@ namespace RecipeApi.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("CollectionName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("LastModified")
+                    b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UserId")
@@ -46,7 +47,7 @@ namespace RecipeApi.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RecipeCollection");
+                    b.ToTable("RecipeCollections");
                 });
 
             modelBuilder.Entity("RecipeApi.Domain.Entities.RecipeDay", b =>
@@ -60,7 +61,7 @@ namespace RecipeApi.Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("LastModified")
+                    b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("RecipeCollectionId")
@@ -80,7 +81,7 @@ namespace RecipeApi.Infrastructure.Migrations
 
                     b.HasIndex("WeekdayId");
 
-                    b.ToTable("RecipeDay");
+                    b.ToTable("RecipeDays");
                 });
 
             modelBuilder.Entity("RecipeApi.Domain.Entities.RecipeInformation", b =>
@@ -95,9 +96,10 @@ namespace RecipeApi.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Image")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("LastModified")
+                    b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Mealtype")
@@ -107,15 +109,21 @@ namespace RecipeApi.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("RecipeName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("RecipeURL")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Time")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RecipeId");
 
                     b.ToTable("RecipeInformation");
                 });
@@ -129,7 +137,6 @@ namespace RecipeApi.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Created")
-                        .HasMaxLength(128)
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedByIp")
@@ -161,7 +168,7 @@ namespace RecipeApi.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshToken");
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("RecipeApi.Domain.Entities.User", b =>
@@ -175,14 +182,18 @@ namespace RecipeApi.Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("LastModified")
+                    b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
@@ -198,7 +209,8 @@ namespace RecipeApi.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("DayOfWeek")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(7)
+                        .HasColumnType("nvarchar(7)");
 
                     b.HasKey("Id");
 

@@ -16,13 +16,13 @@ namespace RecipeApi.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RecipeId = table.Column<long>(type: "bigint", nullable: false),
-                    RecipeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RecipeURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RecipeName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    RecipeURL = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Time = table.Column<int>(type: "int", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Mealtype = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -35,10 +35,10 @@ namespace RecipeApi.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -51,7 +51,7 @@ namespace RecipeApi.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DayOfWeek = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    DayOfWeek = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -59,21 +59,21 @@ namespace RecipeApi.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RecipeCollection",
+                name: "RecipeCollections",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    CollectionName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CollectionName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RecipeCollection", x => x.Id);
+                    table.PrimaryKey("PK_RecipeCollections", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RecipeCollection_Users_UserId",
+                        name: "FK_RecipeCollections_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -81,14 +81,14 @@ namespace RecipeApi.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RefreshToken",
+                name: "RefreshTokens",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Token = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
                     Expires = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", maxLength: 128, nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedByIp = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Revoked = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RevokedByIp = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -98,16 +98,16 @@ namespace RecipeApi.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RefreshToken", x => x.Id);
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RefreshToken_Users_UserId",
+                        name: "FK_RefreshTokens_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "RecipeDay",
+                name: "RecipeDays",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -116,25 +116,25 @@ namespace RecipeApi.Infrastructure.Migrations
                     WeekdayId = table.Column<int>(type: "int", nullable: false),
                     RecipeId = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RecipeDay", x => x.Id);
+                    table.PrimaryKey("PK_RecipeDays", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RecipeDay_RecipeCollection_RecipeCollectionId",
+                        name: "FK_RecipeDays_RecipeCollections_RecipeCollectionId",
                         column: x => x.RecipeCollectionId,
-                        principalTable: "RecipeCollection",
+                        principalTable: "RecipeCollections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RecipeDay_RecipeInformation_RecipeId",
+                        name: "FK_RecipeDays_RecipeInformation_RecipeId",
                         column: x => x.RecipeId,
                         principalTable: "RecipeInformation",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RecipeDay_WeekDay_WeekdayId",
+                        name: "FK_RecipeDays_WeekDay_WeekdayId",
                         column: x => x.WeekdayId,
                         principalTable: "WeekDay",
                         principalColumn: "Id",
@@ -142,41 +142,46 @@ namespace RecipeApi.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_RecipeCollection_UserId",
-                table: "RecipeCollection",
+                name: "IX_RecipeCollections_UserId",
+                table: "RecipeCollections",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RecipeDay_RecipeCollectionId",
-                table: "RecipeDay",
+                name: "IX_RecipeDays_RecipeCollectionId",
+                table: "RecipeDays",
                 column: "RecipeCollectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RecipeDay_RecipeId",
-                table: "RecipeDay",
+                name: "IX_RecipeDays_RecipeId",
+                table: "RecipeDays",
                 column: "RecipeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RecipeDay_WeekdayId",
-                table: "RecipeDay",
+                name: "IX_RecipeDays_WeekdayId",
+                table: "RecipeDays",
                 column: "WeekdayId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefreshToken_UserId",
-                table: "RefreshToken",
+                name: "IX_RecipeInformation_RecipeId",
+                table: "RecipeInformation",
+                column: "RecipeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_UserId",
+                table: "RefreshTokens",
                 column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RecipeDay");
+                name: "RecipeDays");
 
             migrationBuilder.DropTable(
-                name: "RefreshToken");
+                name: "RefreshTokens");
 
             migrationBuilder.DropTable(
-                name: "RecipeCollection");
+                name: "RecipeCollections");
 
             migrationBuilder.DropTable(
                 name: "RecipeInformation");
