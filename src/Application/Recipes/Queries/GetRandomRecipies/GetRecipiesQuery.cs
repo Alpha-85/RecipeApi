@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using RecipeApi.Application.Common.Models;
 using RecipeApi.Application.Common.Models.SpoonResponse;
 
 namespace RecipeApi.Application.Recipes.Queries.GetRandomRecipies;
 
-public class GetRecipesQuery : IRequest<List<Recipe>>
+public class GetRecipesQuery : IRequest<List<RecipeViewModel>>
 {
     public string MealType { get; }
     public string MainIngredient { get; }
