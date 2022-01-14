@@ -33,10 +33,8 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
         var content = await _memoryCachedRecipe.GetCachedRecipes(parsedIngredient, collectedQuery);
 
         var result = new List<RecipeViewModel>();
-        foreach (var item in content)
-        {
-            result.Add(_mapper.Map<RecipeViewModel>(item));
-        }
+
+        result = content.Select(recipe => _mapper.Map<RecipeViewModel>(recipe)).ToList(); 
 
         return result;
     }
