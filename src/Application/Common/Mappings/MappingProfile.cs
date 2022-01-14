@@ -9,8 +9,7 @@ public class MappingProfile : Profile
 
     public MappingProfile()
     {
-        CreateMap<Recipe, RecipeViewModel>()
-            .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Id));
-            
+        CreateMap<Recipe, RecipeViewModel>();
+           
     }
 }
