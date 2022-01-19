@@ -19,7 +19,7 @@ public class RecipeInformationConfiguration : IEntityTypeConfiguration<RecipeInf
             .IsRequired();
         builder.Property(x => x.RecipeId)
             .IsRequired();
-        builder.Property(x => x.Time)
+        builder.Property(x => x.ReadyInMinutes)
             .IsRequired();
         builder.Property(x => x.Image)
             .IsRequired();

@@ -7,7 +7,7 @@ public class RecipeInformation : AuditableEntity
     public long RecipeId { get; set; }
     public string RecipeName { get; set; }
     public string RecipeURL { get; set; }
-    public int Time { get; set; }
+    public int ReadyInMinutes { get; set; }
     public string Image { get; set; }
     public MealType Mealtype { get; set; }
 
