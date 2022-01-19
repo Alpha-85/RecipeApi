@@ -12,7 +12,7 @@ using RecipeApi.Infrastructure.Persistence;
 namespace RecipeApi.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220114212759_initMigration")]
+    [Migration("20220119084823_initMigration")]
     partial class initMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -107,6 +107,9 @@ namespace RecipeApi.Infrastructure.Migrations
                     b.Property<int>("Mealtype")
                         .HasColumnType("int");
 
+                    b.Property<int>("ReadyInMinutes")
+                        .HasColumnType("int");
+
                     b.Property<long>("RecipeId")
                         .HasColumnType("bigint");
 
@@ -119,9 +122,6 @@ namespace RecipeApi.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("Time")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -211,8 +211,8 @@ namespace RecipeApi.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("DayOfWeek")
-                        .HasMaxLength(7)
-                        .HasColumnType("nvarchar(7)");
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
 
                     b.HasKey("Id");
 

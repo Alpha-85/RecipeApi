@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using RecipeApi.Application.Common.Models.SpoonResponse;
+using RecipeApi.Application.Common.Models;
+using RecipeApi.Application.Common.Models.UserRecipes;
+using RecipeApi.Application.Recipes.Commands;
 using RecipeApi.Application.Recipes.Queries.GetRandomRecipies;
 using System;
 using System.Collections.Generic;
@@ -33,7 +35,7 @@ public class RecipeController : ControllerBase
     /// <returns>List of random recipes</returns>
 
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<Recipe>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<RecipeViewModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get([FromQuery] string mealType, string mainIngredient)
@@ -46,4 +48,14 @@ public class RecipeController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    public async Task<IActionResult> PostAsync([FromQuery] UserRecipeRequest request)
+    {
+        await _mediator.Send(new AddRecipeCommand(request));
+
+        return Accepted();
+    }
+
 }

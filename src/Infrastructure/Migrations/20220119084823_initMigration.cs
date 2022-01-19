@@ -18,7 +18,7 @@ namespace RecipeApi.Infrastructure.Migrations
                     RecipeId = table.Column<long>(type: "bigint", nullable: false),
                     RecipeName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     RecipeURL = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Time = table.Column<int>(type: "int", nullable: false),
+                    ReadyInMinutes = table.Column<int>(type: "int", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Mealtype = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -51,7 +51,7 @@ namespace RecipeApi.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DayOfWeek = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: true)
+                    DayOfWeek = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: true)
                 },
                 constraints: table =>
                 {
