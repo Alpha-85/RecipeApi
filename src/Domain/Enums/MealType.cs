@@ -6,7 +6,7 @@ public enum MealType
     Breakfast = 1,
     Lunch,
     Dinner,
-    Desert,
+    Dessert,
     FineDinner
 }
 

@@ -19,6 +19,7 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
 
     public async Task<List<RecipeViewModel>> Handle(GetRecipesQuery query, CancellationToken cancellationToken)
     {
+
         var isValidEnum = Enum.TryParse(
             query.MainIngredient,
             true,
