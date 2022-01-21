@@ -37,7 +37,7 @@ public class RecipeViewModel
     [JsonPropertyName("diets")]
     public List<string> Diets { get; set; }
     [JsonPropertyName("instructions")]
-    public string Instructions { get; set; }
+    public List<string> Instructions { get; set; }
     [JsonPropertyName("spoonacularSourceUrl")]
     public string SpoonacularSourceUrl { get; set; }
 }

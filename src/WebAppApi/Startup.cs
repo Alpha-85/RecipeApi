@@ -14,6 +14,7 @@ using RecipeApi.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace WebAppApi
 {
@@ -30,12 +31,16 @@ namespace WebAppApi
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(opt =>
+                opt.JsonSerializerOptions.Converters
+                .Add(new JsonStringEnumConverter()));
+
             services.AddCors();
             services.AddMemoryCache();
             services.AddApplication();
             services.AddInfrastructure(Configuration);
-
+            services.AddRouting(opt => opt.LowercaseUrls = true);
             services.AddHealthChecks();
 
 
