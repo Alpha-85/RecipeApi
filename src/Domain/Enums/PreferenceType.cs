@@ -1,13 +1,15 @@
 ﻿
 namespace RecipeApi.Domain.Enums;
 
-public enum IngredientType
+public enum PreferenceType
 {
     Fish = 1,
     Pork,
     Beef,
     Plant,
     Fruit,
-    Bird
+    Bird,
+    Breakfast,
+    Dessert,
 }
 

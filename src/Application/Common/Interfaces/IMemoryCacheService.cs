@@ -6,5 +6,5 @@ namespace RecipeApi.Application.Common.Interfaces;
 
 public interface IMemoryCacheService
 {
-    Task<List<Recipe>> GetCachedRecipes(IngredientType mainIngredient, string query);
+    Task<List<Recipe>> GetCachedRecipes(PreferenceType mainIngredient, string query);
 }
