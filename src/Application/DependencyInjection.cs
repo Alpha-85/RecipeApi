@@ -21,6 +21,7 @@ public static class DependencyInjection
         services.AddTransient<ISpoonAdapter, SpoonAdapter>();
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddTransient<IRecipeFilteredService,RecipeFilteredService>();
 
         return services;
     }

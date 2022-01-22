@@ -7,6 +7,7 @@ using RecipeApi.Application.Common.Models;
 using RecipeApi.Application.Common.Models.UserRecipes;
 using RecipeApi.Application.Recipes.Commands;
 using RecipeApi.Application.Recipes.Queries.GetRandomRecipies;
+using RecipeApi.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -31,17 +32,17 @@ public class RecipeController : ControllerBase
     /// Asks the api to get random recipes based on preferences
     /// </summary>
     /// <param name="mealType"></param>
-    /// <param name="mainIngredient"></param>
+    /// <param name="query"></param>
     /// <returns>List of random recipes</returns>
 
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<RecipeViewModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Get([FromQuery] string mealType, string mainIngredient)
+    public async Task<IActionResult> Get([FromQuery] MealType mealType, PreferenceType preference,string allergies)
     {
 
-        var response = await _mediator.Send(new GetRecipesQuery(mealType, mainIngredient));
+        var response = await _mediator.Send(new GetRecipesQuery(mealType, preference,allergies));
 
         if (response is null)
             return NotFound();
