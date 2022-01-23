@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RecipeApi.Application.Common.Models;
+using RecipeApi.Application.Common.Models.Recipes;
 using RecipeApi.Application.Common.Models.UserRecipes;
 using RecipeApi.Application.Recipes.Commands;
 using RecipeApi.Application.Recipes.Queries.GetRandomRecipies;
-using RecipeApi.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -39,10 +39,10 @@ public class RecipeController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<RecipeViewModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Get([FromQuery] MealType mealType, PreferenceType preference,string allergies)
+    public async Task<IActionResult> Get([FromQuery] RecipeRequest recipeRequest)
     {
 
-        var response = await _mediator.Send(new GetRecipesQuery(mealType, preference,allergies));
+        var response = await _mediator.Send(new GetRecipesQuery(recipeRequest));
 
         if (response is null)
             return NotFound();
