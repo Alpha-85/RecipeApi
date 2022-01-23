@@ -2,6 +2,7 @@
 using MediatR;
 using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Application.Common.Models;
+using RecipeApi.Application.Common.Models.Recipes;
 using RecipeApi.Application.Common.Models.SpoonResponse;
 using RecipeApi.Domain.Enums;
 
@@ -18,59 +19,38 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    public async Task<List<RecipeViewModel>> Handle(GetRecipesQuery query, CancellationToken cancellationToken)
+    public async Task<List<RecipeViewModel>> Handle(GetRecipesQuery recipe, CancellationToken cancellationToken)
     {
-        var value = EnumChecker(query.MealType);
+        var value = EnumChecker(recipe.Request.MealType);
         var result = new List<RecipeViewModel>();
 
-        // breakfast eller dessert
-        if (value is 1 && query.Preference
+        if (value is 1 && recipe.Request.Preference
             is PreferenceType.Breakfast
             or PreferenceType.Dessert
           )
         {
             var cachedData = await _memoryCachedRecipe
-                .GetCachedRecipes(query.Preference, query.Preference.ToString().ToLower());
+                .GetCachedRecipes(recipe.Request.Preference, recipe.Request.Preference.ToString().ToLower());
 
-            var content = GetThreeRandomRecipes(cachedData, query.Allergies);
+            var content = GetThreeRandomRecipes(cachedData, recipe.Request.Allergies);
             result = content.Select(recipe => _mapper.Map<RecipeViewModel>(recipe)).ToList();
 
         }
         if (value is 2)
         {
             var collectedQuery = string
-                .Join(",", query.Preference.ToString().ToLower()
-                , query.MealType.ToString().ToLower());
+                .Join(",", recipe.Request.Preference.ToString().ToLower()
+                , recipe.Request.MealType.ToString().ToLower());
 
             var cachedData = await _memoryCachedRecipe
-            .GetCachedRecipes(query.Preference, query.Preference.ToString().ToLower());
+            .GetCachedRecipes(recipe.Request.Preference, recipe.Request.Preference.ToString().ToLower());
 
-            var content = GetThreeRandomRecipes(cachedData, query.Allergies);
+            var content = GetThreeRandomRecipes(cachedData, recipe.Request.Allergies);
             result = content.Select(recipe => _mapper.Map<RecipeViewModel>(recipe)).ToList();
 
         }
 
-
         return result;
-
-        //var isValidEnum = Enum.TryParse(
-        //    query.MainIngredient,
-        //    true,
-        //    out IngredientType parsedIngredient)
-        //    && Enum.IsDefined(typeof(IngredientType), parsedIngredient);
-
-        //if (isValidEnum is false) return new List<RecipeViewModel>();
-
-
-        //var collectedQuery = string.Join(",", query.MainIngredient, query.MealType);
-
-        //var content = await _memoryCachedRecipe.GetCachedRecipes(parsedIngredient, collectedQuery);
-
-        //var result = new List<RecipeViewModel>();
-
-        //result = content.Select(recipe => _mapper.Map<RecipeViewModel>(recipe)).ToList(); 
-
-        //return result;
     }
 
     private int EnumChecker(MealType mealType)
@@ -92,15 +72,63 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
         }
     }
 
-    private List<Recipe> GetThreeRandomRecipes(List<Recipe> listToFilter, string allergies)
+    private List<Recipe> GetThreeRandomRecipes(List<Recipe> listToFilter, Allergies allergies)
     {
         Random random = new();
-        if (String.IsNullOrWhiteSpace(allergies))
-        {
+        if (String.IsNullOrWhiteSpace(allergies.OtherAllergies)
+            && allergies.IsDairyFree is false
+            && allergies.IsGlutenFree is false)
             return listToFilter.OrderBy(x => random.Next()).Take(3).ToList();
 
-        }
+        if (!String.IsNullOrWhiteSpace(allergies.OtherAllergies))
+            listToFilter = OtherAllergies(listToFilter, allergies);
 
-        return listToFilter;
+
+        return listToFilter
+            .OrderBy(x => random.Next())
+            .Take(3)
+            .Where(r => r.DairyFree == allergies.IsDairyFree 
+             && r.GlutenFree == allergies.IsGlutenFree)
+            .ToList();
     }
+
+    private static List<Recipe> OtherAllergies(List<Recipe> listToFilter, Allergies allergies)
+    {
+        /// Seafood,Egg,Nuts etc Milk, Eggs, Other Dairy
+        if (allergies.OtherAllergies.Contains(','))
+        {
+            var values = allergies.OtherAllergies.Split(',');
+
+            return listToFilter
+                .Where(r => r.ExtendedIngredients
+                .Any(s => !values.Contains(s.Aisle)))
+                .ToList();
+        }
+        // Or singleValue
+        return listToFilter
+          .Where(r => r.ExtendedIngredients
+          .Any(s => !s.Aisle.Contains(allergies.OtherAllergies)))
+          .ToList();
+    }
+    ///// Seafood,Egg,Nuts etc
+    //if (allergies.OtherAllergies.Contains(','))
+    //{
+    //    var values = allergies.OtherAllergies.Split(',');
+
+    //    return listToFilter
+    //        .OrderBy(x => random.Next())
+    //        .Take(3)
+    //        .Where(r => r.ExtendedIngredients
+    //        .Any(s => !values.Contains(s.Aisle)))
+    //        .ToList();
+    //}
+    //else
+    //{
+    //    return listToFilter
+    //        .OrderBy(x => random.Next())
+    //        .Take(3)
+    //        .Where(r => r.ExtendedIngredients
+    //        .Any(s => !s.Aisle.Contains(allergies.OtherAllergies)))
+    //        .ToList();
+    //}
 }

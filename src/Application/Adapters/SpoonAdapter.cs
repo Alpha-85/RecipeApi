@@ -26,7 +26,7 @@ public class SpoonAdapter : ISpoonAdapter
         List<Recipe> list = new();
 
         var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
-            $"/recipes/random?limitLicense=true&tags={query}&number=50&apiKey={_spoonApiSettings.ApiKey}");
+            $"/recipes/random?limitLicense=true&tags={query}&number=100&apiKey={_spoonApiSettings.ApiKey}");
         httpRequestMessage.Headers.Add("Accept", "application/json");
 
         var response = await _httpClient.SendAsync(httpRequestMessage);

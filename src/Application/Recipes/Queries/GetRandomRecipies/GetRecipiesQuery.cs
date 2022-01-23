@@ -1,19 +1,26 @@
 ﻿using MediatR;
 using RecipeApi.Application.Common.Models;
+using RecipeApi.Application.Common.Models.Recipes;
 using RecipeApi.Domain.Enums;
 
 namespace RecipeApi.Application.Recipes.Queries.GetRandomRecipies;
 
 public class GetRecipesQuery : IRequest<List<RecipeViewModel>>
 {
-    public MealType MealType { get; }
-    public PreferenceType Preference { get; }
-    public string Allergies { get; }
+    public RecipeRequest Request { get; }
 
-    public GetRecipesQuery(in MealType mealType, in PreferenceType preference, in string allergies)
+    public GetRecipesQuery(in RecipeRequest request)
     {
-        MealType = mealType;
-        Preference = preference;
-        Allergies = allergies;
+        Request = request;
     }
+    //public MealType MealType { get; }
+    //public PreferenceType Preference { get; }
+    //public Allergies Allergies { get; }
+
+    //public GetRecipesQuery(in MealType mealType, in PreferenceType preference, in Allergies allergies)
+    //{
+    //    MealType = mealType;
+    //    Preference = preference;
+    //    Allergies = allergies;
+    //}
 }
