@@ -2,6 +2,7 @@
 using MediatR;
 using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Application.Common.Models;
+using RecipeApi.Application.Common.Models.SpoonResponse;
 using RecipeApi.Domain.Enums;
 
 namespace RecipeApi.Application.Recipes.Queries.GetRandomRecipies;
@@ -10,13 +11,11 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
 {
     private readonly IMapper _mapper;
     private readonly IMemoryCacheService _memoryCachedRecipe;
-    private readonly IRecipeFilteredService _recipeFilterService;
 
-    public GetRecipesHandler(IMemoryCacheService memoryCachedRecipe, IMapper mapper, IRecipeFilteredService recipeFilter)
+    public GetRecipesHandler(IMemoryCacheService memoryCachedRecipe, IMapper mapper)
     {
         _memoryCachedRecipe = memoryCachedRecipe ?? throw new ArgumentNullException(nameof(memoryCachedRecipe));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        _recipeFilterService = recipeFilter ?? throw new ArgumentNullException(nameof(recipeFilter));
     }
 
     public async Task<List<RecipeViewModel>> Handle(GetRecipesQuery query, CancellationToken cancellationToken)
@@ -25,24 +24,30 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
         var result = new List<RecipeViewModel>();
 
         // breakfast eller dessert
-        if (value is 1 && query.Preference 
-            is  PreferenceType.Breakfast 
-            or PreferenceType.Dessert 
+        if (value is 1 && query.Preference
+            is PreferenceType.Breakfast
+            or PreferenceType.Dessert
           )
         {
-            //result.AddRange(await _memoryCachedRecipe
-            //    .GetCachedRecipes(query.Preference, query.Preference
-            //    .ToString()
-            //    .ToLower()));
+            var cachedData = await _memoryCachedRecipe
+                .GetCachedRecipes(query.Preference, query.Preference.ToString().ToLower());
+
+            var content = GetThreeRandomRecipes(cachedData, query.Allergies);
+            result = content.Select(recipe => _mapper.Map<RecipeViewModel>(recipe)).ToList();
+
         }
         if (value is 2)
         {
             var collectedQuery = string
                 .Join(",", query.Preference.ToString().ToLower()
                 , query.MealType.ToString().ToLower());
-            //result.AddRange(await _memoryCachedRecipe
-            //    .GetCachedRecipes(query.Preference, collectedQuery));
-          
+
+            var cachedData = await _memoryCachedRecipe
+            .GetCachedRecipes(query.Preference, query.Preference.ToString().ToLower());
+
+            var content = GetThreeRandomRecipes(cachedData, query.Allergies);
+            result = content.Select(recipe => _mapper.Map<RecipeViewModel>(recipe)).ToList();
+
         }
 
 
@@ -67,8 +72,6 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
 
         //return result;
     }
-    // om allergy strängen är tom lägg inte till i strin.joing 
-    // 
 
     private int EnumChecker(MealType mealType)
     {
@@ -87,5 +90,17 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
 
             default: return 0;
         }
+    }
+
+    private List<Recipe> GetThreeRandomRecipes(List<Recipe> listToFilter, string allergies)
+    {
+        Random random = new();
+        if (String.IsNullOrWhiteSpace(allergies))
+        {
+            return listToFilter.OrderBy(x => random.Next()).Take(3).ToList();
+
+        }
+
+        return listToFilter;
     }
 }
