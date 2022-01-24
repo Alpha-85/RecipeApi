@@ -24,7 +24,7 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
         var value = EnumChecker(recipe.Request.MealType);
         var result = new List<RecipeViewModel>();
 
-        // Switch case depending on what kind of InMemoryList it should save or get from.
+        // Switch case depending on what kind of InMemoryList it should save or retrieve from.
         switch (value)
         {
             case 1 when recipe.Request.Preference
@@ -68,16 +68,7 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
     private static IEnumerable<Recipe> GetThreeRandomRecipes(IEnumerable<Recipe> listToFilter, Allergies allergies)
     {
         Random random = new();
-        var filteredList = new List<Recipe>();
-
-        if (string.IsNullOrEmpty(allergies.OtherAllergies)
-            && allergies.IsDairyFree is false
-            && allergies.IsGlutenFree is false)
-        {
-            filteredList = listToFilter.OrderBy(x => random.Next()).Take(3).ToList();
-            return filteredList;
-        }
-
+        var filteredList = (List<Recipe>)listToFilter;
 
         if (!string.IsNullOrEmpty(allergies.OtherAllergies))
         {
@@ -94,7 +85,7 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
 
     private static List<Recipe> FilterByOtherAllergies(IEnumerable<Recipe> listToFilter, Allergies allergies)
     {
-        // Seafood,Egg,Nuts , Milk, Eggs, Other Dairy,Ethnic Foods
+        // Example allergies would be eggs,nuts, specify all types of shellfish. 
         if (allergies.OtherAllergies.Contains(','))
         {
             var values = allergies.OtherAllergies.Split(',');
