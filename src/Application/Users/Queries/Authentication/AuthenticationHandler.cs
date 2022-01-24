@@ -18,8 +18,8 @@ public class AuthenticationHandler : IRequestHandler<AuthenticationQuery, Authen
 
     public AuthenticationHandler(IApplicationDbContext context, IJwtService jwtService, IOptions<AppSettings> appSettings)
     {
-        _context = context ?? throw new ArgumentNullException(nameof(_context));
-        _jwtService = jwtService ?? throw new ArgumentNullException(nameof(_jwtService));
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        _jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
         _appSettings = appSettings.Value ?? throw new ArgumentNullException(nameof(_appSettings));
     }
 

@@ -32,7 +32,7 @@ public class AddRecipeCommandHandler : IRequestHandler<AddRecipeCommand, bool>
         if (!isExisting)
         {
             var recipe = _mapper.Map<RecipeInformation>(request.UserRecipe.RecipeInformation);
-            await _context.RecipeInformation.AddAsync(recipe);
+            await _context.RecipeInformation.AddAsync(recipe, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
         }
         
@@ -47,7 +47,7 @@ public class AddRecipeCommandHandler : IRequestHandler<AddRecipeCommand, bool>
             WeekdayId = request.UserRecipe.WeekdayId,
         };
 
-        await _context.RecipeDays.AddAsync(recipeDay);
+        await _context.RecipeDays.AddAsync(recipeDay, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
 

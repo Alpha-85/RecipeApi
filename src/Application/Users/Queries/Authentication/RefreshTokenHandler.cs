@@ -17,10 +17,10 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenQuery, Authentica
 
     public RefreshTokenHandler(IApplicationDbContext context, IJwtService jwtService, IOptions<AppSettings> appSettings,IUserService userService)
     {
-        _context = context ?? throw new ArgumentNullException(nameof(_context));
-        _jwtService = jwtService ?? throw new ArgumentNullException(nameof(_jwtService));
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        _jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
         _appSettings = appSettings.Value ?? throw new ArgumentNullException(nameof(_appSettings));
-        _userService = userService ?? throw new ArgumentNullException(nameof(_userService));
+        _userService = userService ?? throw new ArgumentNullException(nameof(userService));
     }
     public async Task<AuthenticateResponse> Handle(RefreshTokenQuery request, CancellationToken cancellationToken)
     {
@@ -57,9 +57,9 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenQuery, Authentica
 
     private User GetUserByRefreshToken(string token)
     {
-        var user = _context.Users.Include(r => r.RefreshTokens)
-            .Where(u => u.RefreshTokens.Any(t => t.Token == token))
-            .FirstOrDefault();
+        var user = _context.Users
+            .Include(r => r.RefreshTokens)
+            .FirstOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
 
         if(user is null)
             return null;

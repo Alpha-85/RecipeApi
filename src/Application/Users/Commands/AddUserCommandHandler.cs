@@ -30,7 +30,7 @@ public class AddUserCommandHandler : IRequestHandler<AddUserCommand, bool>
         var hashedPassword = BCryptNet.HashPassword(request.Password);
        
         await _context.Users.AddAsync(new User()
-        { UserName = request.Username, PasswordHash = hashedPassword });
+        { UserName = request.Username, PasswordHash = hashedPassword }, cancellationToken);
 
         await _context.SaveChangesAsync(cancellationToken);
 
