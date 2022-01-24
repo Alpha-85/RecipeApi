@@ -6,6 +6,7 @@ using RecipeApi.Application.Common.Models;
 using RecipeApi.Application.Recipes.Commands.AddRecipeCollection;
 using System;
 using System.Threading.Tasks;
+using RecipeApi.Application.Recipes.Queries.GetRecipeCollections;
 
 namespace RecipeApi.WebAppApi.Controllers;
 
@@ -26,6 +27,16 @@ public class RecipeCollectionController : ControllerBase
     {
 
         var response = await _mediator.Send(new AddRecipeCollectionCommand(collectionName, userId));
+
+        return Ok(response);
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(RecipeCollectionViewModel), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAsync([FromQuery] int userId)
+    {
+
+        var response = await _mediator.Send(new GetRecipeCollectionQuery(userId));
 
         return Ok(response);
     }

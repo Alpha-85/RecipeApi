@@ -23,7 +23,7 @@ public class AddUserCommandHandler : IRequestHandler<AddUserCommand, bool>
 
         if (userExists is not null)
         {
-            _logger.LogError("User already exists",request.Username);
+            _logger.LogError($"User already exists {request.Username}");
             return false;
         }
 
