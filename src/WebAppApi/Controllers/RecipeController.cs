@@ -7,7 +7,7 @@ using RecipeApi.Application.Common.Models;
 using RecipeApi.Application.Common.Models.Recipes;
 using RecipeApi.Application.Common.Models.UserRecipes;
 using RecipeApi.Application.Recipes.Commands;
-using RecipeApi.Application.Recipes.Queries.GetRandomRecipies;
+using RecipeApi.Application.Recipes.Queries.GetRandomRecipes;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,14 +26,6 @@ public class RecipeController : ControllerBase
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
-
-
-    /// <summary>
-    /// Asks the api to get random recipes based on preferences
-    /// </summary>
-    /// <param name="mealType"></param>
-    /// <param name="query"></param>
-    /// <returns>List of random recipes</returns>
 
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<RecipeViewModel>), StatusCodes.Status200OK)]
