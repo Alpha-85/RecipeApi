@@ -30,23 +30,31 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
             case 1 when recipe.Request.Preference
                 is PreferenceType.Breakfast
                 or PreferenceType.Dessert:
-                {
-                    var cachedData = await _memoryCachedRecipe
-                        .GetCachedRecipes(recipe.Request.Preference, recipe.Request.Preference.ToString().ToLower());
+            {
+                var cachedData = await _memoryCachedRecipe
+                    .GetCachedRecipes(recipe.Request.Preference,
+                        recipe.Request.Preference.ToString()
+                            .ToLower());
 
-                    var content = GetThreeRandomRecipes(cachedData, recipe.Request.Allergies);
-                    result = content.Select(source => _mapper.Map<RecipeViewModel>(source)).ToList();
-                    break;
-                }
+                var content = GetThreeRandomRecipes(cachedData,
+                    recipe.Request.Allergies);
+                result = content.Select(source => _mapper.Map<RecipeViewModel>(source))
+                    .ToList();
+                break;
+            }
             case 2:
-                {
-                    var cachedData = await _memoryCachedRecipe
-                        .GetCachedRecipes(recipe.Request.Preference, recipe.Request.Preference.ToString().ToLower());
+            {
+                var cachedData = await _memoryCachedRecipe
+                    .GetCachedRecipes(recipe.Request.Preference,
+                        recipe.Request.Preference.ToString()
+                            .ToLower());
 
-                    var content = GetThreeRandomRecipes(cachedData, recipe.Request.Allergies);
-                    result = content.Select(source => _mapper.Map<RecipeViewModel>(source)).ToList();
-                    break;
-                }
+                var content = GetThreeRandomRecipes(cachedData,
+                    recipe.Request.Allergies);
+                result = content.Select(source => _mapper.Map<RecipeViewModel>(source))
+                    .ToList();
+                break;
+            }
         }
 
         return result;
