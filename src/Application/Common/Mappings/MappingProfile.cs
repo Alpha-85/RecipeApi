@@ -27,9 +27,9 @@ public class MappingProfile : Profile
         var pattern = String.Format("(</?(?!{0})[^<>]*(?<!{0})>)", remainTag);
         var replacedString = Regex.Replace(orginalString, pattern, "");
 
-        string[] seperation = { "</li>", "<li>" ,"\n"};
+        string[] separation = { "</li>", "<li>" ,"\n"};
 
-        string[] sectionedData = replacedString.Split(seperation, StringSplitOptions.RemoveEmptyEntries);
+        string[] sectionedData = replacedString.Split(separation, StringSplitOptions.RemoveEmptyEntries);
         result.AddRange(sectionedData);
         return result;
 

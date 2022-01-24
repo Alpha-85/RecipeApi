@@ -25,7 +25,7 @@ public class AddRecipeCollectionCommandHandler : IRequestHandler<AddRecipeCollec
             CollectionName = request.CollectionName,
         };
 
-        await _context.RecipeCollections.AddAsync(collection);
+        await _context.RecipeCollections.AddAsync(collection, cancellationToken);
 
         await _context.SaveChangesAsync(cancellationToken);
 
