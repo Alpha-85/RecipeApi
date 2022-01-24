@@ -13,14 +13,4 @@ public class GetRecipesQuery : IRequest<List<RecipeViewModel>>
     {
         Request = request;
     }
-    //public MealType MealType { get; }
-    //public PreferenceType Preference { get; }
-    //public Allergies Allergies { get; }
-
-    //public GetRecipesQuery(in MealType mealType, in PreferenceType preference, in Allergies allergies)
-    //{
-    //    MealType = mealType;
-    //    Preference = preference;
-    //    Allergies = allergies;
-    //}
 }
