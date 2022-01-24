@@ -8,7 +8,7 @@ public enum PreferenceType
     Beef,
     Plant,
     Fruit,
-    Bird,
+    Chicken,
     Breakfast,
     Dessert,
 }
