@@ -39,15 +39,19 @@ public class AddRecipeCommandHandler : IRequestHandler<AddRecipeCommand, bool>
         var recipeInfo = await _context.RecipeInformation
             .Where(r => r.RecipeName == request.UserRecipe.RecipeInformation.RecipeName)
             .FirstOrDefaultAsync(CancellationToken.None);
-       
-        var recipeDay = new RecipeDay()
-        {
-            RecipeCollectionId = request.UserRecipe.CollectionId,
-            RecipeId = recipeInfo.Id,
-            WeekdayId = request.UserRecipe.WeekdayId,
-        };
 
-        await _context.RecipeDays.AddAsync(recipeDay, cancellationToken);
+        if (recipeInfo != null)
+        {
+            var recipeDay = new RecipeDay()
+            {
+                RecipeCollectionId = request.UserRecipe.CollectionId,
+                RecipeId = recipeInfo.Id,
+                WeekdayId = request.UserRecipe.WeekdayId,
+            };
+
+            await _context.RecipeDays.AddAsync(recipeDay, cancellationToken);
+        }
+
         await _context.SaveChangesAsync(cancellationToken);
 
 
