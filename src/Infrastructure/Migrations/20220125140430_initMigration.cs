@@ -17,10 +17,9 @@ namespace RecipeApi.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RecipeId = table.Column<long>(type: "bigint", nullable: false),
                     RecipeName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    RecipeURL = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    RecipeUrl = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ReadyInMinutes = table.Column<int>(type: "int", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Mealtype = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -114,7 +113,8 @@ namespace RecipeApi.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RecipeCollectionId = table.Column<int>(type: "int", nullable: false),
                     WeekdayId = table.Column<int>(type: "int", nullable: false),
-                    RecipeId = table.Column<int>(type: "int", nullable: false),
+                    RecipeInformationId = table.Column<int>(type: "int", nullable: false),
+                    MealType = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -128,8 +128,8 @@ namespace RecipeApi.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RecipeDays_RecipeInformation_RecipeId",
-                        column: x => x.RecipeId,
+                        name: "FK_RecipeDays_RecipeInformation_RecipeInformationId",
+                        column: x => x.RecipeInformationId,
                         principalTable: "RecipeInformation",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -152,9 +152,9 @@ namespace RecipeApi.Infrastructure.Migrations
                 column: "RecipeCollectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RecipeDays_RecipeId",
+                name: "IX_RecipeDays_RecipeInformationId",
                 table: "RecipeDays",
-                column: "RecipeId");
+                column: "RecipeInformationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecipeDays_WeekdayId",

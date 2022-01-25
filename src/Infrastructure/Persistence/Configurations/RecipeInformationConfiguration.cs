@@ -11,7 +11,7 @@ public class RecipeInformationConfiguration : IEntityTypeConfiguration<RecipeInf
         builder.HasKey(x => x.Id);
         builder.HasIndex(x => x.RecipeId);
        
-        builder.Property(x => x.RecipeURL)
+        builder.Property(x => x.RecipeUrl)
             .HasMaxLength(100)
             .IsRequired();
         builder.Property(x => x.RecipeName)
@@ -22,8 +22,6 @@ public class RecipeInformationConfiguration : IEntityTypeConfiguration<RecipeInf
         builder.Property(x => x.ReadyInMinutes)
             .IsRequired();
         builder.Property(x => x.Image)
-            .IsRequired();
-        builder.Property(x => x.Mealtype)
             .IsRequired();
 
     }
