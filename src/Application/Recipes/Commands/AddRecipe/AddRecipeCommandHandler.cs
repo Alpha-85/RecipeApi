@@ -45,7 +45,7 @@ public class AddRecipeCommandHandler : IRequestHandler<AddRecipeCommand, bool>
             var recipeDay = new RecipeDay()
             {
                 RecipeCollectionId = request.UserRecipe.CollectionId,
-                RecipeId = recipeInfo.Id,
+                RecipeInformationId = recipeInfo.Id,
                 WeekdayId = request.UserRecipe.WeekdayId,
             };
 

@@ -64,10 +64,13 @@ namespace RecipeApi.Infrastructure.Migrations
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("MealType")
+                        .HasColumnType("int");
+
                     b.Property<int>("RecipeCollectionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RecipeId")
+                    b.Property<int>("RecipeInformationId")
                         .HasColumnType("int");
 
                     b.Property<int>("WeekdayId")
@@ -77,7 +80,7 @@ namespace RecipeApi.Infrastructure.Migrations
 
                     b.HasIndex("RecipeCollectionId");
 
-                    b.HasIndex("RecipeId");
+                    b.HasIndex("RecipeInformationId");
 
                     b.HasIndex("WeekdayId");
 
@@ -102,9 +105,6 @@ namespace RecipeApi.Infrastructure.Migrations
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Mealtype")
-                        .HasColumnType("int");
-
                     b.Property<int>("ReadyInMinutes")
                         .HasColumnType("int");
 
@@ -116,7 +116,7 @@ namespace RecipeApi.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("RecipeURL")
+                    b.Property<string>("RecipeUrl")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -238,7 +238,7 @@ namespace RecipeApi.Infrastructure.Migrations
 
                     b.HasOne("RecipeApi.Domain.Entities.RecipeInformation", "Recipe")
                         .WithMany()
-                        .HasForeignKey("RecipeId")
+                        .HasForeignKey("RecipeInformationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
