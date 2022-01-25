@@ -6,23 +6,27 @@ using RecipeApi.Application.Common.Models;
 
 namespace RecipeApi.Application.Recipes.Queries.GetRecipeCollections;
 
-public class GetRecipeCollectionHandler : IRequestHandler<GetRecipeCollectionQuery, List<RecipeCollectionViewModel>>
+public class GetRecipeCollectionHandler : IRequestHandler<GetRecipeCollectionQuery, List<RecipeCollectionResponse>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
 
     public GetRecipeCollectionHandler(IApplicationDbContext context, IMapper mapper)
     {
-        _context = context;
-        _mapper = mapper;
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    public async Task<List<RecipeCollectionViewModel>> Handle(GetRecipeCollectionQuery request, CancellationToken cancellationToken)
+    public async Task<List<RecipeCollectionResponse>> Handle(GetRecipeCollectionQuery request, CancellationToken cancellationToken)
     {
-        var queryable = _context.RecipeCollections.Where(c => c.UserId == request.Id)
+        var queryable = _context.RecipeCollections
+            .Include(r => r.RecipeDays)
+            .ThenInclude(s => s.Weekday)
+            .ThenInclude(s => s.DayOfWeek)
+            .Where(c => c.UserId == request.Id)
             .AsQueryable();
 
-        return await queryable.Select(x => _mapper.Map<RecipeCollectionViewModel>(x))
+        return await queryable.Select(x => _mapper.Map<RecipeCollectionResponse>(x))
             .ToListAsync(cancellationToken);
     }
 }

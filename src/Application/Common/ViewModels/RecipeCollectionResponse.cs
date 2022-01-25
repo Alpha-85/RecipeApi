@@ -2,7 +2,7 @@
 
 namespace RecipeApi.Application.Common.Models;
 
-public class RecipeCollectionViewModel
+public class RecipeCollectionResponse
 {
     [JsonPropertyName("id")]
     public int Id { get; set; }
