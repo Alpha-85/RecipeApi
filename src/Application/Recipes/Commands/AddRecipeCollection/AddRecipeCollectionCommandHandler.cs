@@ -7,7 +7,7 @@ using RecipeApi.Domain.Entities;
 
 namespace RecipeApi.Application.Recipes.Commands.AddRecipeCollection;
 
-public class AddRecipeCollectionCommandHandler : IRequestHandler<AddRecipeCollectionCommand, RecipeCollectionViewModel>
+public class AddRecipeCollectionCommandHandler : IRequestHandler<AddRecipeCollectionCommand, RecipeCollectionResponse>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
@@ -17,7 +17,7 @@ public class AddRecipeCollectionCommandHandler : IRequestHandler<AddRecipeCollec
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
-    public async Task<RecipeCollectionViewModel> Handle(AddRecipeCollectionCommand request, CancellationToken cancellationToken)
+    public async Task<RecipeCollectionResponse> Handle(AddRecipeCollectionCommand request, CancellationToken cancellationToken)
     {
         var collection = new RecipeCollection()
         {
@@ -29,7 +29,7 @@ public class AddRecipeCollectionCommandHandler : IRequestHandler<AddRecipeCollec
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        var result = _mapper.Map<RecipeCollectionViewModel>(collection);
+        var result = _mapper.Map<RecipeCollectionResponse>(collection);
 
         return result;
     }

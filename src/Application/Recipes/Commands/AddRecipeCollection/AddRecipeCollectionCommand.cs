@@ -4,7 +4,7 @@ using RecipeApi.Application.Common.Models;
 
 namespace RecipeApi.Application.Recipes.Commands.AddRecipeCollection;
 
-public class AddRecipeCollectionCommand : IRequest<RecipeCollectionViewModel>
+public class AddRecipeCollectionCommand : IRequest<RecipeCollectionResponse>
 {
     public int UserId { get; set; }
     public string CollectionName { get; }

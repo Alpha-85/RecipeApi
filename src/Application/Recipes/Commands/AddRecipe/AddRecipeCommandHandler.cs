@@ -40,7 +40,7 @@ public class AddRecipeCommandHandler : IRequestHandler<AddRecipeCommand, bool>
             .Where(r => r.RecipeName == request.UserRecipe.RecipeInformation.RecipeName)
             .FirstOrDefaultAsync(CancellationToken.None);
 
-        if (recipeInfo != null)
+        if (recipeInfo is not null)
         {
             var recipeDay = new RecipeDay()
             {

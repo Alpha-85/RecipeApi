@@ -22,7 +22,7 @@ public class RecipeCollectionController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(RecipeCollectionViewModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RecipeCollectionResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> PostAsync([FromQuery] int userId, string collectionName)
     {
 
@@ -32,7 +32,7 @@ public class RecipeCollectionController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(RecipeCollectionViewModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RecipeCollectionResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAsync([FromQuery] int userId)
     {
 
