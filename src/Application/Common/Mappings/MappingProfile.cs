@@ -49,9 +49,11 @@ public class MappingProfile : Profile
     {
         var result = new List<string>();
         
-        if (isEgg) result.Add("eggs");
-        if (isNuts) result.Add("nuts");
-        if (isShellfish) result.AddRange(new[] { "shrimp", "crab", "lobster", "squid", "oysters", "scallops" });
+        
+        if (isEgg) result.Add("egg");
+        if (isNuts) result.Add("nut");
+        if (isShellfish) result.AddRange(new[] { "prawn","shrimp", "crab", "lobster", "squid", "oyster", "scallop" });
+        if(result.Count == 0) result.Add("");
 
         return result.Count > 1 ? string.Join(",", result) : result.First();
     }

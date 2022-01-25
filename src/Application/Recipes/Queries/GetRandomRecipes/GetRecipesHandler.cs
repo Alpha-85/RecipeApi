@@ -22,6 +22,8 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
     public async Task<List<RecipeViewModel>> Handle(GetRecipesQuery recipe, CancellationToken cancellationToken)
     {
         var value = EnumChecker(recipe.Request.MealType);
+        var allergies = _mapper.Map<Allergies>(recipe.Request.Allergies);
+
         var result = new List<RecipeViewModel>();
 
         // Switch case depending on what kind of InMemoryList it should save or retrieve from.
@@ -30,31 +32,31 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
             case 1 when recipe.Request.Preference
                 is PreferenceType.Breakfast
                 or PreferenceType.Dessert:
-            {
-                var cachedData = await _memoryCachedRecipe
-                    .GetCachedRecipes(recipe.Request.Preference,
-                        recipe.Request.Preference.ToString()
-                            .ToLower());
+                {
+                    var cachedData = await _memoryCachedRecipe
+                        .GetCachedRecipes(recipe.Request.Preference,
+                            recipe.Request.Preference.ToString()
+                                .ToLower());
 
-                var content = GetThreeRandomRecipes(cachedData,
-                    recipe.Request.Allergies);
-                result = content.Select(source => _mapper.Map<RecipeViewModel>(source))
-                    .ToList();
-                break;
-            }
+                    var content = GetThreeRandomRecipes(cachedData,
+                        allergies);
+                    result = content.Select(source => _mapper.Map<RecipeViewModel>(source))
+                        .ToList();
+                    break;
+                }
             case 2:
-            {
-                var cachedData = await _memoryCachedRecipe
-                    .GetCachedRecipes(recipe.Request.Preference,
-                        recipe.Request.Preference.ToString()
-                            .ToLower());
+                {
+                    var cachedData = await _memoryCachedRecipe
+                        .GetCachedRecipes(recipe.Request.Preference,
+                            recipe.Request.Preference.ToString()
+                                .ToLower());
 
-                var content = GetThreeRandomRecipes(cachedData,
-                    recipe.Request.Allergies);
-                result = content.Select(source => _mapper.Map<RecipeViewModel>(source))
-                    .ToList();
-                break;
-            }
+                    var content = GetThreeRandomRecipes(cachedData,
+                        allergies);
+                    result = content.Select(source => _mapper.Map<RecipeViewModel>(source))
+                        .ToList();
+                    break;
+                }
         }
 
         return result;
@@ -73,34 +75,38 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
         };
     }
 
-    private static IEnumerable<Recipe> GetThreeRandomRecipes(IEnumerable<Recipe> listToFilter, Allergies allergies)
+    private static IEnumerable<Recipe> GetThreeRandomRecipes(List<Recipe> listToFilter, Allergies allergies)
     {
         Random random = new();
-        var filteredList = (List<Recipe>)listToFilter;
+        var filtered = new List<Recipe>();
 
         if (!string.IsNullOrEmpty(allergies.OtherAllergies))
         {
-            filteredList = FilterByOtherAllergies(listToFilter, allergies);
+            filtered = FilterByOtherAllergies(listToFilter, allergies);
+            return filtered;
         }
 
-        return filteredList
-            .OrderBy(x => random.Next())
-            .Where(r => r.DairyFree == allergies.IsDairyFree
-                        && r.GlutenFree == allergies.IsGlutenFree)
-            .Take(3)
-            .ToList();
+        filtered = listToFilter
+           .OrderBy(x => random.Next())
+           .Where(r => r.DairyFree == allergies.IsDairyFree
+                       && r.GlutenFree == allergies.IsGlutenFree)
+           .Take(3)
+           .ToList();
+
+        return filtered;
     }
 
-    private static List<Recipe> FilterByOtherAllergies(IEnumerable<Recipe> listToFilter, Allergies allergies)
+    private static List<Recipe> FilterByOtherAllergies(List<Recipe> listToFilter, Allergies allergies)
     {
-        // Example allergies would be eggs,nuts, specify all types of shellfish. 
+        var filtered = new List<Recipe>();
+
         if (allergies.OtherAllergies.Contains(','))
         {
             var values = allergies.OtherAllergies.Split(',');
 
-            var filtered = listToFilter
+             filtered = listToFilter
                 .Where(r => r.ExtendedIngredients
-                    .Any(i => !values
+                    .All(i => !values
                         .Any(s => i.Name
                             .Contains(s))))
                 .ToList();
@@ -109,11 +115,12 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
 
         }
 
-        var filteredList = listToFilter
+        filtered =  listToFilter
             .Where(r => r.ExtendedIngredients
-                .Any(s => !s.Name.Contains(allergies.OtherAllergies)))
+                .All(s => !s.Name.Contains(allergies.OtherAllergies)))
             .ToList();
-        return filteredList;
+
+        return filtered;
     }
 
 }
