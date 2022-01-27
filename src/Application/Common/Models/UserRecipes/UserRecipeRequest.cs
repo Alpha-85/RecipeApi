@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using RecipeApi.Domain.Enums;
 
 namespace RecipeApi.Application.Common.Models.UserRecipes;
 
@@ -11,6 +12,7 @@ public class UserRecipeRequest
     [JsonPropertyName("weekdayId")]
     public int WeekdayId { get; set; }
     [JsonPropertyName("mealType")]
+    public MealType MealType { get; set; }
     public RecipeInformationViewModel RecipeInformation { get; set; }
 
 }

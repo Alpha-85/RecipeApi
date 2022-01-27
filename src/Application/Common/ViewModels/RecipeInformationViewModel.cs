@@ -1,12 +1,9 @@
-﻿using RecipeApi.Domain.Enums;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace RecipeApi.Application.Common.Models;
 
 public class RecipeInformationViewModel
 {
-    [JsonPropertyName("mealType")]
-    public MealType MealType { get; set; }
     [JsonPropertyName("recipeName")]
     public string RecipeName { get; set; }
     [JsonPropertyName("recipeId")]
@@ -14,7 +11,7 @@ public class RecipeInformationViewModel
     [JsonPropertyName("readyInMinutes")]
     public int ReadyInMinutes { get; set; }
     [JsonPropertyName("sourceUrl")]
-    public string RecipeURL { get; set; }
+    public string RecipeUrl { get; set; }
     [JsonPropertyName("image")]
     public string Image { get; set; }
 }

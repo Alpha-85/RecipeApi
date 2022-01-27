@@ -29,7 +29,6 @@ public class RecipeController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<RecipeViewModel>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get([FromQuery] RecipeRequest recipeRequest)
     {
@@ -43,12 +42,16 @@ public class RecipeController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PostAsync([FromQuery] UserRecipeRequest request)
     {
-        await _mediator.Send(new AddRecipeCommand(request));
+        var response = await _mediator.Send(new AddRecipeCommand(request));
 
-        return Accepted();
+        if (response is false)
+            return BadRequest("Invalid data/combination");
+
+        return Ok();
     }
 
 }
