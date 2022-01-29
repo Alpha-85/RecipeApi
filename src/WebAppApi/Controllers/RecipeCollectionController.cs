@@ -40,4 +40,23 @@ public class RecipeCollectionController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpGet("Details")]
+    [ProducesResponseType(typeof(RecipeDayResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> DetailsAsync([FromQuery] int userId, int collectionId)
+    {
+
+        var response = await _mediator.Send(new GetRecipeDayQuery(userId,collectionId));
+
+        return Ok(response);
+    }
+
+    [HttpDelete]
+    [ProducesResponseType(typeof(RecipeCollectionResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RecipeCollectionResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteAsync([FromQuery] int userId, int collectionId)
+    {
+        throw new NotImplementedException();
+
+    }
 }
