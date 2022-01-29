@@ -2,7 +2,6 @@
 using RecipeApi.Application.Common.Models;
 using RecipeApi.Application.Common.Models.Recipes;
 using RecipeApi.Application.Common.Models.SpoonResponse;
-using RecipeApi.Application.Common.ViewModels;
 using RecipeApi.Domain.Entities;
 using System.Text.RegularExpressions;
 
@@ -14,19 +13,36 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<Recipe, RecipeViewModel>()
-            .ForMember(dest => dest.Instructions, m => m
-            .MapFrom(src => StringSplitter(src.Instructions)));
+            .ForMember(dest => dest.Instructions,
+                m => m
+                    .MapFrom(src => StringSplitter(src.Instructions)));
 
-        CreateMap<RecipeInformation, RecipeInformationViewModel>().ReverseMap();
+        CreateMap<RecipeInformation, RecipeInformationViewModel>()
+            .ReverseMap();
         CreateMap<RecipeCollection, RecipeCollectionResponse>();
         CreateMap<AllergiesViewModel, Allergies>()
-            .ForMember(dest => dest.IsDairyFree, m => m
-                .MapFrom(src => src.IsMilk))
-            .ForMember(dest => dest.IsGlutenFree, m => m
-                .MapFrom(src => src.IsGluten))
+            .ForMember(dest => dest.IsDairyFree,
+                m => m
+                    .MapFrom(src => src.IsMilk))
+            .ForMember(dest => dest.IsGlutenFree,
+                m => m
+                    .MapFrom(src => src.IsGluten))
             .ForMember(dest => dest.OtherAllergies,
                 m => m.MapFrom(src =>
-                    AllergiesConcat(src.IsEgg, src.IsNuts, src.IsShellfish)));
+                    AllergiesConcat(src.IsEgg,
+                        src.IsNuts,
+                        src.IsShellfish)));
+
+
+        CreateMap<RecipeDay, RecipeDayResponse>()
+            .ForMember(dest => dest.Weekday, m => m.MapFrom(src => src.Weekday.DayOfWeek.ToString()))
+            .ForPath(dest => dest.Recipe.Image, m => m.MapFrom(src => src.Recipe.Image))
+            .ForPath(dest => dest.Recipe.ReadyInMinutes, m => m.MapFrom(src => src.Recipe.ReadyInMinutes))
+            .ForPath(dest => dest.Recipe.RecipeId, m => m.MapFrom(src => src.Recipe.RecipeId))
+            .ForPath(dest => dest.Recipe.RecipeName, m => m.MapFrom(src => src.Recipe.RecipeName))
+            .ForPath(dest => dest.Recipe.RecipeUrl, m => m.MapFrom(src => src.Recipe.RecipeUrl))
+            .ForPath(dest => dest.Recipe.MealType, m => m.MapFrom(src => src.MealType));
+
 
     }
 

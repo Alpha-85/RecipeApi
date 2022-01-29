@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace RecipeApi.Application.Common.ViewModels;
+namespace RecipeApi.Application.Common.Models;
 
 public class AllergiesViewModel
 {

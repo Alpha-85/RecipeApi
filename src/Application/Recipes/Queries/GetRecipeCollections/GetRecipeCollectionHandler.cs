@@ -20,10 +20,7 @@ public class GetRecipeCollectionHandler : IRequestHandler<GetRecipeCollectionQue
     public async Task<List<RecipeCollectionResponse>> Handle(GetRecipeCollectionQuery request, CancellationToken cancellationToken)
     {
         var queryable = _context.RecipeCollections
-            .Include(r => r.RecipeDays)
-            .ThenInclude(s => s.Weekday)
-            .ThenInclude(s => s.DayOfWeek)
-            .Where(c => c.UserId == request.Id)
+            .Where(x => x.UserId == request.Id)
             .AsQueryable();
 
         return await queryable.Select(x => _mapper.Map<RecipeCollectionResponse>(x))
