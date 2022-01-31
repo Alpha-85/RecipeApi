@@ -7,5 +7,5 @@ public class RecipeDayResponse
     [JsonPropertyName("weekday")]
     public string Weekday { get; set; }
     [JsonPropertyName("recipe")]
-    public RecipeDetailsViewModel Recipe { get; set; }
+    public List<RecipeInformationViewModel> RecipesList { get; set; }
 }
