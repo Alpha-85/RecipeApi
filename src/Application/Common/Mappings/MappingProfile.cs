@@ -34,14 +34,14 @@ public class MappingProfile : Profile
                         src.IsShellfish)));
 
 
-        CreateMap<RecipeDay, RecipeDayResponse>()
-            .ForMember(dest => dest.Weekday, m => m.MapFrom(src => src.Weekday.DayOfWeek.ToString()))
-            .ForPath(dest => dest.Recipe.Image, m => m.MapFrom(src => src.Recipe.Image))
-            .ForPath(dest => dest.Recipe.ReadyInMinutes, m => m.MapFrom(src => src.Recipe.ReadyInMinutes))
-            .ForPath(dest => dest.Recipe.RecipeId, m => m.MapFrom(src => src.Recipe.RecipeId))
-            .ForPath(dest => dest.Recipe.RecipeName, m => m.MapFrom(src => src.Recipe.RecipeName))
-            .ForPath(dest => dest.Recipe.RecipeUrl, m => m.MapFrom(src => src.Recipe.RecipeUrl))
-            .ForPath(dest => dest.Recipe.MealType, m => m.MapFrom(src => src.MealType));
+        //CreateMap<RecipeDay, RecipeDayResponse>()
+        //    .ForMember(dest => dest.Weekday, m => m.MapFrom(src => src.Weekday.DayOfWeek.ToString()))
+        //    .ForPath(dest => dest.Recipe.Image, m => m.MapFrom(src => src.Recipe.Image))
+        //    .ForPath(dest => dest.Recipe.ReadyInMinutes, m => m.MapFrom(src => src.Recipe.ReadyInMinutes))
+        //    .ForPath(dest => dest.Recipe.RecipeId, m => m.MapFrom(src => src.Recipe.RecipeId))
+        //    .ForPath(dest => dest.Recipe.RecipeName, m => m.MapFrom(src => src.Recipe.RecipeName))
+        //    .ForPath(dest => dest.Recipe.RecipeUrl, m => m.MapFrom(src => src.Recipe.RecipeUrl))
+        //    .ForPath(dest => dest.Recipe.MealType, m => m.MapFrom(src => src.MealType));
 
 
     }

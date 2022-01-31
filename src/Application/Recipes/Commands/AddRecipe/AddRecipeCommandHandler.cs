@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Domain.Entities;
-using RecipeApi.Domain.Enums;
 
 namespace RecipeApi.Application.Recipes.Commands;
 
@@ -19,52 +18,48 @@ public class AddRecipeCommandHandler : IRequestHandler<AddRecipeCommand, bool>
 
     public async Task<bool> Handle(AddRecipeCommand request, CancellationToken cancellationToken)
     {
-        var user = _context.Users
-            .Include(x => x.RecipeCollections)
-            .SingleOrDefault(user => user.Id == request.UserRecipe.UserId);
+        var mealType = request.UserRecipe.RecipeInformation.MealType;
+        var day = request.UserRecipe.WeekdayId;
+        var collectionId = request.UserRecipe.CollectionId;
 
-        if (user is null)
+        var recipeDay = _context.RecipeDays
+            .Include(r => r.Recipes)
+            .Where(m => m.WeekdayId == day && m.RecipeCollectionId == collectionId)
+            .Select(r => r)
+            .FirstOrDefault() ?? await AddRecipeDay(request, cancellationToken);
+
+        if(recipeDay.RecipeCollectionId != collectionId) return false;
+
+        var recipes = recipeDay.Recipes.Where(r => r.MealType == mealType);
+
+        if (recipes.Any())
             return false;
 
-        var mealType = request.UserRecipe.MealType;
-        var day = request.UserRecipe.WeekdayId;
-
-        var isMatch = FindMatch(request, mealType, day);
-
-        if (isMatch) return false;
-
-        await AddRecipe(request, cancellationToken);
+        await AddRecipe(recipeDay, request, cancellationToken);
 
         return true;
     }
 
-    private bool FindMatch(AddRecipeCommand request, MealType mealType, int day)
-    {
-        var match = _context.RecipeDays
-            .Where(m => m.MealType == mealType && m.WeekdayId == day &&
-                        m.RecipeCollectionId == request.UserRecipe.CollectionId)
-            .Select(r => r)
-            .FirstOrDefault();
-
-        return match != null;
-    }
-
-    private async Task AddRecipe(AddRecipeCommand request, CancellationToken cancellationToken)
+    private async Task AddRecipe(RecipeDay recipeDay, AddRecipeCommand request, CancellationToken cancellationToken)
     {
         var recipe = _mapper.Map<RecipeInformation>(request.UserRecipe.RecipeInformation);
+        recipe.RecipeDayId = recipeDay.Id;
+
         await _context.RecipeInformation.AddAsync(recipe, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
+    }
 
+    private async Task<RecipeDay> AddRecipeDay(AddRecipeCommand request, CancellationToken cancellationToken)
+    {
         var recipeDay = new RecipeDay()
         {
             RecipeCollectionId = request.UserRecipe.CollectionId,
-            RecipeInformationId = recipe.Id,
             WeekdayId = request.UserRecipe.WeekdayId,
-            MealType = request.UserRecipe.MealType
         };
 
         await _context.RecipeDays.AddAsync(recipeDay, cancellationToken);
-
         await _context.SaveChangesAsync(cancellationToken);
+
+        return recipeDay;
     }
 }
