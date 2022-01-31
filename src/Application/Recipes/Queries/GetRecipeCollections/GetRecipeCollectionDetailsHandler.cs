@@ -19,19 +19,16 @@ public class GetRecipeCollectionDetailsHandler : IRequestHandler<GetRecipeDayQue
 
     public async Task<List<RecipeDayResponse>> Handle(GetRecipeDayQuery request, CancellationToken cancellationToken)
     {
-        //var details = await _context.RecipeCollections
-        //    .Where(u => u.UserId == request.UserId && u.Id == request.CollectionId)
-        //    .Include(x => x.RecipeDays)
-        //    .ThenInclude(x => x.Recipe)
-        //    .Include(rd => rd.RecipeDays)
-        //    .ThenInclude(w => w.Weekday)
-        //    .SelectMany(r => r.RecipeDays)
-        //    .OrderByDescending(x => x.Weekday.DayOfWeek)
-        //    .ToListAsync(cancellationToken);
+        var details = await _context.RecipeCollections
+            .Where(u => u.UserId == request.UserId && u.Id == request.CollectionId)
+            .Include(r => r.RecipeDays)
+            .ThenInclude(x => x.Recipes)
+            .Include(x => x.RecipeDays)
+            .ThenInclude(x => x.Weekday)
+            .SelectMany(x => x.RecipeDays)
+            .ToListAsync(cancellationToken);
 
+        return details.Select(r => _mapper.Map<RecipeDayResponse>(r)).ToList();
 
-        //return details.Select(r => _mapper.Map<RecipeDayResponse>(r)).ToList();
-
-        return new List<RecipeDayResponse>();
     }
 }
