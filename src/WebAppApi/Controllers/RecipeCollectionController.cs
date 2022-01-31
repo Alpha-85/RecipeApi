@@ -6,6 +6,7 @@ using RecipeApi.Application.Common.Models;
 using RecipeApi.Application.Recipes.Commands.AddRecipeCollection;
 using System;
 using System.Threading.Tasks;
+using RecipeApi.Application.Recipes.Commands.DeleteRecipeCollection;
 using RecipeApi.Application.Recipes.Queries.GetRecipeCollections;
 
 namespace RecipeApi.WebAppApi.Controllers;
@@ -52,11 +53,15 @@ public class RecipeCollectionController : ControllerBase
     }
 
     [HttpDelete]
-    [ProducesResponseType(typeof(RecipeCollectionResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(RecipeCollectionResponse), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteAsync([FromQuery] int userId, int collectionId)
     {
-        throw new NotImplementedException();
+        var response = await _mediator.Send(new DeleteRecipeCollectionCommand(userId, collectionId));
+        if (response is false)
+            return NotFound();
+
+        return Ok();
 
     }
 }
