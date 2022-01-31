@@ -51,7 +51,7 @@ public class RecipeController : ControllerBase
         if (response is false)
             return BadRequest("Invalid data/combination");
 
-        return Ok();
+        return Ok("Saved to db");
     }
 
 }
