@@ -9,6 +9,8 @@ public class RecipeDayConfiguration : IEntityTypeConfiguration<RecipeDay>
     public void Configure(EntityTypeBuilder<RecipeDay> builder)
     {
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.MealType).IsRequired();
+        builder.HasMany(r => r.Recipes)
+            .WithOne(d => d.RecipeDay)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

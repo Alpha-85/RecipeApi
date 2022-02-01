@@ -61,7 +61,7 @@ public class RecipeCollectionController : ControllerBase
         if (response is false)
             return NotFound();
 
-        return Ok();
+        return Ok("Collection deleted");
 
     }
 }
