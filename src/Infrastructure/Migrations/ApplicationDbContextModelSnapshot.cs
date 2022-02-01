@@ -64,13 +64,7 @@ namespace RecipeApi.Infrastructure.Migrations
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MealType")
-                        .HasColumnType("int");
-
                     b.Property<int>("RecipeCollectionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RecipeInformationId")
                         .HasColumnType("int");
 
                     b.Property<int>("WeekdayId")
@@ -79,8 +73,6 @@ namespace RecipeApi.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("RecipeCollectionId");
-
-                    b.HasIndex("RecipeInformationId");
 
                     b.HasIndex("WeekdayId");
 
@@ -105,7 +97,13 @@ namespace RecipeApi.Infrastructure.Migrations
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("MealType")
+                        .HasColumnType("int");
+
                     b.Property<int>("ReadyInMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RecipeDayId")
                         .HasColumnType("int");
 
                     b.Property<long>("RecipeId")
@@ -122,6 +120,8 @@ namespace RecipeApi.Infrastructure.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RecipeDayId");
 
                     b.HasIndex("RecipeId");
 
@@ -236,23 +236,26 @@ namespace RecipeApi.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RecipeApi.Domain.Entities.RecipeInformation", "Recipe")
-                        .WithMany()
-                        .HasForeignKey("RecipeInformationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("RecipeApi.Domain.Entities.WeekDay", "Weekday")
                         .WithMany()
                         .HasForeignKey("WeekdayId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Recipe");
-
                     b.Navigation("RecipeCollection");
 
                     b.Navigation("Weekday");
+                });
+
+            modelBuilder.Entity("RecipeApi.Domain.Entities.RecipeInformation", b =>
+                {
+                    b.HasOne("RecipeApi.Domain.Entities.RecipeDay", "RecipeDay")
+                        .WithMany("Recipes")
+                        .HasForeignKey("RecipeDayId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RecipeDay");
                 });
 
             modelBuilder.Entity("RecipeApi.Domain.Entities.RefreshToken", b =>
@@ -265,6 +268,11 @@ namespace RecipeApi.Infrastructure.Migrations
             modelBuilder.Entity("RecipeApi.Domain.Entities.RecipeCollection", b =>
                 {
                     b.Navigation("RecipeDays");
+                });
+
+            modelBuilder.Entity("RecipeApi.Domain.Entities.RecipeDay", b =>
+                {
+                    b.Navigation("Recipes");
                 });
 
             modelBuilder.Entity("RecipeApi.Domain.Entities.User", b =>

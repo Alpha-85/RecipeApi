@@ -16,9 +16,8 @@ public class DeleteRecipeCollectionCommandHandler : IRequestHandler<DeleteRecipe
     public async Task<bool> Handle(DeleteRecipeCollectionCommand request, CancellationToken cancellationToken)
     {
         var collection = await _context.RecipeCollections
-            .Include(x => x.RecipeDays)
-            .ThenInclude(x => x.Recipe)
-            .Where(u => u.UserId == request.UserId && u.Id == request.CollectionId)
+            .Include(r => r.RecipeDays)
+            .Where(c => c.UserId == request.UserId && c.Id == request.CollectionId)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (collection is null)

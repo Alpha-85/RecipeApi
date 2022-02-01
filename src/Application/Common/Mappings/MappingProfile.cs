@@ -35,14 +35,11 @@ public class MappingProfile : Profile
 
 
         CreateMap<RecipeDay, RecipeDayResponse>()
-            .ForMember(dest => dest.Weekday, m => m.MapFrom(src => src.Weekday.DayOfWeek.ToString()))
-            .ForPath(dest => dest.Recipe.Image, m => m.MapFrom(src => src.Recipe.Image))
-            .ForPath(dest => dest.Recipe.ReadyInMinutes, m => m.MapFrom(src => src.Recipe.ReadyInMinutes))
-            .ForPath(dest => dest.Recipe.RecipeId, m => m.MapFrom(src => src.Recipe.RecipeId))
-            .ForPath(dest => dest.Recipe.RecipeName, m => m.MapFrom(src => src.Recipe.RecipeName))
-            .ForPath(dest => dest.Recipe.RecipeUrl, m => m.MapFrom(src => src.Recipe.RecipeUrl))
-            .ForPath(dest => dest.Recipe.MealType, m => m.MapFrom(src => src.MealType));
-
+            .ForMember(dest => dest.Weekday,
+                m => m.MapFrom(src => src.Weekday.DayOfWeek.ToString()))
+            .ForMember(dest => dest.RecipesList,
+                opt => opt.MapFrom(
+                    src => src.Recipes.Select(r => r)));
 
     }
 
@@ -64,12 +61,12 @@ public class MappingProfile : Profile
     private static string AllergiesConcat(bool isEgg, bool isNuts, bool isShellfish)
     {
         var result = new List<string>();
-        
-        
+
+
         if (isEgg) result.Add("egg");
         if (isNuts) result.Add("nut");
-        if (isShellfish) result.AddRange(new[] { "prawn","shrimp", "crab", "lobster", "squid", "oyster", "scallop" });
-        if(result.Count == 0) result.Add("");
+        if (isShellfish) result.AddRange(new[] { "prawn", "shrimp", "crab", "lobster", "squid", "oyster", "scallop" });
+        if (result.Count == 0) result.Add("");
 
         return result.Count > 1 ? string.Join(",", result) : result.First();
     }
