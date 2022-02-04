@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace RecipeApi.Application.Common.Models;
-
+[Serializable]
 public class AllergiesViewModel
 {
     [JsonPropertyName("milk")]
