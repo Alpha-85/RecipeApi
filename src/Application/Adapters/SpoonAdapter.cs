@@ -48,5 +48,23 @@ public class SpoonAdapter : ISpoonAdapter
         return list;
 
     }
+
+    public async Task<List<ExtendedIngredient>> GetRecipeIngredientsAsync(int recipeId)
+    {
+
+        var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
+            $"/recipes/{recipeId}/information?includeNutrition=false&apiKey={_spoonApiSettings.ApiKey}");
+        httpRequestMessage.Headers.Add("Accept", "application/json");
+
+        var response = await _httpClient.SendAsync(httpRequestMessage);
+
+        if (!response.IsSuccessStatusCode) return new List<ExtendedIngredient>();
+        var json = await response?.Content.ReadAsStringAsync();
+        _logger.LogInformation(json);
+
+        var obj = JsonConvert.DeserializeObject<Recipe>(json);
+
+        return obj is not null ? obj.ExtendedIngredients : new List<ExtendedIngredient>();
+    }
 }
 
