@@ -6,8 +6,10 @@ using RecipeApi.Application.Common.Models;
 using RecipeApi.Application.Recipes.Commands.AddRecipeCollection;
 using System;
 using System.Threading.Tasks;
+using RecipeApi.Application.Common.Models.Recipes.RecipeResponse;
 using RecipeApi.Application.Recipes.Commands.DeleteRecipeCollection;
 using RecipeApi.Application.Recipes.Queries.GetRecipeCollections;
+using RecipeApi.Application.Recipes.Queries.GetRecipeIngredients;
 
 namespace RecipeApi.WebAppApi.Controllers;
 
@@ -63,5 +65,15 @@ public class RecipeCollectionController : ControllerBase
 
         return Ok("Collection deleted");
 
+    }
+
+    [HttpGet("ShoppingList")]
+    [ProducesResponseType(typeof(RecipeShoppingListResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetShoppingListAsync([FromQuery] int userId, int collectionId)
+    {
+
+        var response = await _mediator.Send(new GetShoppingIngredientsQuery(userId, collectionId));
+
+        return Ok(response);
     }
 }

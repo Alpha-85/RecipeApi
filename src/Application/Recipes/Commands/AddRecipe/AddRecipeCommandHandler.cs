@@ -26,10 +26,9 @@ public class AddRecipeCommandHandler : IRequestHandler<AddRecipeCommand, bool>
             .Include(r => r.Recipes)
             .Where(m => m.WeekdayId == day && m.RecipeCollectionId == collectionId)
             .Select(r => r)
-            .FirstOrDefault() ?? AddRecipeDay(request, cancellationToken);
+            .FirstOrDefault() ?? await AddRecipeDay(request, cancellationToken);
 
-        if (recipeDay.RecipeCollectionId != collectionId) return false;
-        if (recipeDay.Recipes.All(r => r.MealType == mealType)) return false;
+        if (recipeDay.Recipes != null && recipeDay.Recipes.Any(r => r.MealType == mealType)) return false;
 
         if (recipeDay.Recipes == null)
             await AddRecipe(recipeDay, request, cancellationToken);
@@ -46,7 +45,7 @@ public class AddRecipeCommandHandler : IRequestHandler<AddRecipeCommand, bool>
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    private RecipeDay AddRecipeDay(AddRecipeCommand request, CancellationToken cancellationToken)
+    private async Task<RecipeDay> AddRecipeDay(AddRecipeCommand request, CancellationToken cancellationToken)
     {
         var recipeDay = new RecipeDay()
         {
@@ -54,8 +53,8 @@ public class AddRecipeCommandHandler : IRequestHandler<AddRecipeCommand, bool>
             WeekdayId = request.UserRecipe.WeekdayId,
         };
 
-        _context.RecipeDays.AddAsync(recipeDay, cancellationToken);
-        _context.SaveChangesAsync(cancellationToken);
+        await _context.RecipeDays.AddAsync(recipeDay, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
 
         return recipeDay;
     }
