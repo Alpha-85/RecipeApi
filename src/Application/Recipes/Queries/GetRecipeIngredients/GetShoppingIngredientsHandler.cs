@@ -44,7 +44,8 @@ public class GetShoppingIngredientsHandler : IRequestHandler<GetShoppingIngredie
         var ingredientView = list.GroupBy(x => x.Name).Select(y => new ShoppingIngredientViewModel()
         {
             Name = y.Key,
-            Amount = y.Sum(x => x.Amount)
+            Amount = y.Sum(x => x.Amount),
+            Metric = y.Select(x => x.Measures.Metric.UnitShort).FirstOrDefault()
 
         }).ToList();
 
