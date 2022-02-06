@@ -49,7 +49,7 @@ public class SpoonAdapter : ISpoonAdapter
 
     }
 
-    public async Task<List<ExtendedIngredient>> GetRecipeIngredientsAsync(int recipeId)
+    public async Task<List<ExtendedIngredient>> GetRecipeIngredientsAsync(long recipeId)
     {
 
         var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
