@@ -4,5 +4,5 @@ namespace RecipeApi.Application.Common.Models.Recipes.RecipeResponse;
 
 public class RecipeShoppingListResponse
 {
-    public List<ShoppingIngredientViewModel> ShoppingIngredients { get; set; }
+    public List<ShoppingIngredientViewModel> ShoppingIngredients { get; set; } = new();
 }
