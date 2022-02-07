@@ -25,11 +25,7 @@ steps:
   inputs:
     command: publish
     publishWebProjects: false
-    projects: |
-     **/Domain.csproj
-     **/Application.csproj
-     **/Infrastructure.csproj
-     **/WebAppApi.csproj
+    projects: 'RecipeApi.sln'
     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: true
 
