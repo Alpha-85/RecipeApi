@@ -36,7 +36,11 @@ namespace WebAppApi
                 opt.JsonSerializerOptions.Converters
                 .Add(new JsonStringEnumConverter()));
 
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Alfons", builder => builder.AllowAnyOrigin().AllowAnyHeader().WithMethods("PUT", "DELETE", "GET","POST"));
+
+            });
             services.AddMemoryCache();
             services.AddApplication();
             services.AddInfrastructure(Configuration);
@@ -121,10 +125,7 @@ namespace WebAppApi
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseCors(x => x
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+            app.UseCors("Alfons");
             app.UseAuthentication();
             app.UseAuthorization();
 
