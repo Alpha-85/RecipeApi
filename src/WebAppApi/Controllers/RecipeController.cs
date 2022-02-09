@@ -16,7 +16,7 @@ namespace RecipeApi.WebAppApi.Controllers;
 // Removed Authorize for testing live
 //[Authorize]
 [ApiController]
-[Route("/api/v1/[controller]")]
+[Route("api/v1/[controller]")]
 public class RecipeController : ControllerBase
 {
     private readonly IMediator _mediator;

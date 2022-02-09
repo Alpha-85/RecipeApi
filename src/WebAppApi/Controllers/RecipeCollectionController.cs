@@ -15,7 +15,7 @@ namespace RecipeApi.WebAppApi.Controllers;
 
 [Authorize]
 [ApiController]
-[Route("/api/v1/[controller]")]
+[Route("api/v1/[controller]")]
 public class RecipeCollectionController : ControllerBase
 {
     private readonly IMediator _mediator;

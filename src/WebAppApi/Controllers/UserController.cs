@@ -12,7 +12,7 @@ namespace RecipeApi.WebAppApi.Controllers;
 
 [Authorize]
 [ApiController]
-[Route("/api/v1/[controller]")]
+[Route("api/v1/[controller]")]
 public class UsersController : ControllerBase
 {
 
