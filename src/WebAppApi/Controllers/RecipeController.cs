@@ -13,8 +13,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RecipeApi.WebAppApi.Controllers;
-// Removed Authorize for testing live
-//[Authorize]
+
+[Authorize]
 [ApiController]
 [Route("api/v1/[controller]")]
 public class RecipeController : ControllerBase
