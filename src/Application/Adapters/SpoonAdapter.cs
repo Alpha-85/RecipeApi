@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
+﻿using System.Text.Json;
+using Microsoft.Extensions.Logging;
+//using Microsoft.Extensions.Options;
+//using Newtonsoft.Json;
 using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Application.Common.Models.SpoonResponse;
 using RecipeApi.Application.Common.Settings;
@@ -37,8 +38,8 @@ public class SpoonAdapter : ISpoonAdapter
         {
             var json = await response?.Content.ReadAsStringAsync();
             _logger.LogInformation(json);
-
-            var obj = JsonConvert.DeserializeObject<RecipeList>(json);
+            var obj = JsonSerializer.Deserialize<RecipeList>(json);
+           // var obj = JsonConvert.DeserializeObject<RecipeList>(json);
 
             if (obj is not null)
             {
@@ -64,7 +65,7 @@ public class SpoonAdapter : ISpoonAdapter
         var json = await response?.Content.ReadAsStringAsync();
         _logger.LogInformation(json);
 
-        var obj = JsonConvert.DeserializeObject<Recipe>(json);
+        var obj = JsonSerializer.Deserialize<Recipe>(json);
 
         return obj is not null ? obj.ExtendedIngredients : new List<ExtendedIngredient>();
     }
