@@ -100,7 +100,7 @@ namespace WebAppApi
 
             services.AddHttpClient<ISpoonAdapter, SpoonAdapter>(c =>
             {
-                c.BaseAddress = new Uri("https://api.spoonacular.com/");
+               // c.BaseAddress = new Uri("https://api.spoonacular.com/");
                 c.DefaultRequestHeaders.Add("Accept", "application/.json");
             });
 
