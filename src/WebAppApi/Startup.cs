@@ -48,7 +48,7 @@ namespace WebAppApi
             services.AddHealthChecks();
 
 
-            services.Configure<SpoonApiSettings>(Configuration.GetSection("SpoonAcular"));
+            //services.Configure<SpoonApiSettings>(Configuration.GetSection("SpoonAcular"));
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddSwaggerGen(c =>
             {

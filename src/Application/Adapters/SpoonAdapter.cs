@@ -55,7 +55,7 @@ public class SpoonAdapter : ISpoonAdapter
     {
 
         var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
-            $"/recipes/{recipeId}/information?includeNutrition=false&apiKey={_spoonApiSettings.ApiKey}");
+            $"https://api.spoonacular.com/recipes/{recipeId}/information?includeNutrition=false&apiKey=***REMOVED***");
         httpRequestMessage.Headers.Add("Accept", "application/json");
 
         var response = await _httpClient.SendAsync(httpRequestMessage);
