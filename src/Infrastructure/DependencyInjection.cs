@@ -21,7 +21,7 @@ public static class DependencyInjection
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("CloudDatabase"));
+                options.UseSqlServer(configuration.GetConnectionString("HGDatabase"));
             });
         }
        
