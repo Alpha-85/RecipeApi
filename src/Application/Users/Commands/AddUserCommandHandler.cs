@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Domain.Entities;
@@ -19,7 +20,7 @@ public class AddUserCommandHandler : IRequestHandler<AddUserCommand, bool>
     }
     public async Task<bool> Handle(AddUserCommand request, CancellationToken cancellationToken)
     {
-        var userExists = _context.Users.FirstOrDefault(u => u.UserName == request.Username);
+        var userExists = await _context.Users.FirstOrDefaultAsync(u => u.UserName == request.Username,cancellationToken);
 
         if (userExists is not null)
         {
