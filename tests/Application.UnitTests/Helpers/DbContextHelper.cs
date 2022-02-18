@@ -2,7 +2,7 @@
 using RecipeApi.Infrastructure.Persistence;
 using System;
 
-namespace Application.IntegrationTests.Helpers;
+namespace Application.UnitTests.Helpers;
 
 public static class DbContextHelper
 {
