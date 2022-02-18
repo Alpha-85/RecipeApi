@@ -70,7 +70,7 @@ public class UsersController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("refresh-token")]
-    public async Task<IActionResult> RefreshToken(string refreshToken)
+    public async Task<IActionResult> RefreshToken([FromBody]string refreshToken)
     {
 
         var response = await _mediator.Send(new RefreshTokenQuery(refreshToken, IpAddress()));
