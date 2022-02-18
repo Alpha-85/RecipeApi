@@ -5,6 +5,7 @@ using NSubstitute;
 using RecipeApi.Application.Common.Models.UserRecipes;
 using RecipeApi.Application.Recipes.Commands;
 using System.Threading.Tasks;
+using RecipeApi.Domain.Entities;
 using Xunit;
 
 namespace Application.UnitTests.Handlers;
@@ -19,6 +20,7 @@ public class AddRecipeCommandHandlerTests
         var recipe = RequestObjectBuilder.GetUserRecipeRequest();
         var handler = new AddRecipeCommandHandler(applicationDbContext, mapper);
         var request = new AddRecipeCommand(recipe);
+        mapper.Map<RecipeInformation>(recipe).Returns(new RecipeInformation());
 
         var exception = await Record.ExceptionAsync(() => handler.Handle(request, CancellationToken.None));
 
