@@ -72,29 +72,15 @@ public class UsersController : ControllerBase
     [HttpPost("refresh-token")]
     public async Task<IActionResult> RefreshToken(string refreshToken)
     {
-        //var refreshToken = Request.Cookies["refreshToken"];
 
         var response = await _mediator.Send(new RefreshTokenQuery(refreshToken, IpAddress()));
 
         if (response is null)
             return BadRequest(new { message = "Something is wrong with RefreshToken" });
 
-        SetTokenCookie(response.RefreshToken);
+        //SetTokenCookie(response.RefreshToken);
         return Ok(response);
     }
-
-    //[HttpPost("revoke-token")]
-    //public async Task<IActionResult> RevokeToken(RevokeTokenRequest model)
-    //{
-    //    // accept refresh token in request body or cookie
-    //    var token = model.Token ?? Request.Cookies["refreshToken"];
-
-    //    if (string.IsNullOrEmpty(token))
-    //        return BadRequest(new { message = "Token is required" });
-
-    //    _userService.RevokeToken(token, IpAddress());
-    //    return Ok(new { message = "Token revoked" });
-    //}
 
     private void SetTokenCookie(string token)
     {

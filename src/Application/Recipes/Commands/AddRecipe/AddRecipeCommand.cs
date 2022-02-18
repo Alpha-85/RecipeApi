@@ -8,7 +8,7 @@ public class AddRecipeCommand : IRequest<bool>
 {
     public UserRecipeRequest UserRecipe { get; }
 
-    public AddRecipeCommand(UserRecipeRequest userRecipe)
+    public AddRecipeCommand(in UserRecipeRequest userRecipe)
     {
         UserRecipe = userRecipe;
     }
