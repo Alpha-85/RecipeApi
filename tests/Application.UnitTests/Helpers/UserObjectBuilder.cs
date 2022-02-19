@@ -43,6 +43,7 @@ public static class UserObjectBuilder
                         {
                             Id = 1,
                             RecipeCollectionId = 1,
+                            WeekdayId = 1,
                             Recipes = new List<RecipeInformation>()
                             {
                                 new()
