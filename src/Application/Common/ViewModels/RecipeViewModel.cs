@@ -6,8 +6,8 @@ namespace RecipeApi.Application.Common.Models;
 
 public class RecipeViewModel
 {
-    [JsonPropertyName("vegeterian")]
-    public bool Vegeterian { get; set; }
+    [JsonPropertyName("vegetarian")]
+    public bool Vegetarian { get; set; }
     [JsonPropertyName("vegan")]
     public bool Vegan { get; set; }
     [JsonPropertyName("glutenFree")]

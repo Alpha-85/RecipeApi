@@ -15,8 +15,7 @@ public class MappingProfile : Profile
         CreateMap<Recipe, RecipeViewModel>()
             .ForMember(dest => dest.Instructions,
                 m => m
-                    .MapFrom(src => StringSplitter(src.Instructions)))
-            .ForMember(dest => dest.Vegeterian, m => m.MapFrom(src => src.Vegetarian));
+                    .MapFrom(src => StringSplitter(src.Instructions)));
 
         CreateMap<RecipeInformation, RecipeInformationViewModel>()
             .ReverseMap();
