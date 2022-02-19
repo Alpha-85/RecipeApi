@@ -41,7 +41,7 @@ public class GetRecipeCollectionHandlerTests
     }
 
     [Fact]
-    public async Task HandlerShouldReturnListOfRecipeDaysWithOneItem()
+    public async Task HandlerShouldReturnListOfUsersRecipeCollectionNames()
     {
         var user = UserObjectBuilder.GetDefaultUser();
         var mapper = AutoMapperHelper.GetAutoMapper();
