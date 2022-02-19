@@ -28,8 +28,10 @@ public class RecipeCollectionController : ControllerBase
     [ProducesResponseType(typeof(RecipeCollectionResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> PostAsync([FromQuery] int userId, string collectionName)
     {
-
         var response = await _mediator.Send(new AddRecipeCollectionCommand(collectionName, userId));
+
+        if (response == null)
+            return BadRequest("Collection already exists");
 
         return Ok(response);
     }
@@ -40,7 +42,7 @@ public class RecipeCollectionController : ControllerBase
     {
 
         var response = await _mediator.Send(new GetRecipeCollectionQuery(userId));
-
+        
         return Ok(response);
     }
 

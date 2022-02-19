@@ -1,29 +1,55 @@
-﻿using System.Threading;
-using Application.UnitTests.Helpers;
-using AutoMapper;
-using NSubstitute;
-using RecipeApi.Application.Common.Models.UserRecipes;
+﻿using Application.UnitTests.Helpers;
 using RecipeApi.Application.Recipes.Commands;
+using System.Threading;
 using System.Threading.Tasks;
-using RecipeApi.Domain.Entities;
 using Xunit;
 
 namespace Application.UnitTests.Handlers;
 
 public class AddRecipeCommandHandlerTests
 {
-    [Fact(Skip = "Not done")]
+    [Fact]
     public async Task HandlerShouldNotThrowException()
     {
         var applicationDbContext = DbContextHelper.GetApplicationDbContext();
-        var mapper = Substitute.For<IMapper>();
+        var mapper = AutoMapperHelper.GetAutoMapper();
         var recipe = RequestObjectBuilder.GetUserRecipeRequest();
         var handler = new AddRecipeCommandHandler(applicationDbContext, mapper);
         var request = new AddRecipeCommand(recipe);
-        mapper.Map<RecipeInformation>(recipe).Returns(new RecipeInformation());
 
         var exception = await Record.ExceptionAsync(() => handler.Handle(request, CancellationToken.None));
 
         Assert.Null(exception);
+    }
+
+    [Fact]
+    public async Task HandlerShouldReturnTrueWithNewRecipe()
+    {
+        var applicationDbContext = DbContextHelper.GetApplicationDbContext();
+        var mapper = AutoMapperHelper.GetAutoMapper();
+        var recipe = RequestObjectBuilder.GetUserRecipeRequest();
+        var handler = new AddRecipeCommandHandler(applicationDbContext, mapper);
+        var request = new AddRecipeCommand(recipe);
+
+        var result = await handler.Handle(request, CancellationToken.None);
+        
+        Assert.True(result);
+    }
+
+    [Fact]
+    public async Task HandlerShouldReturnFalseIfRecipeDayAlreadyExist()
+    {
+        var mapper = AutoMapperHelper.GetAutoMapper();
+        var recipe = RequestObjectBuilder.GetUserRecipeRequest();
+        var user = UserObjectBuilder.GetDefaultUser();
+        var applicationDbContext = DbContextHelper.GetApplicationDbContext();
+        applicationDbContext.Add(user);
+        await applicationDbContext.SaveChangesAsync();
+        var handler = new AddRecipeCommandHandler(applicationDbContext, mapper);
+        var request = new AddRecipeCommand(recipe);
+
+        var result = await handler.Handle(request, CancellationToken.None);
+
+        Assert.False(result);
     }
 }

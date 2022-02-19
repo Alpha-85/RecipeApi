@@ -1,6 +1,7 @@
 ﻿
 using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Application.Common.Models;
 using RecipeApi.Domain.Entities;
@@ -19,6 +20,13 @@ public class AddRecipeCollectionCommandHandler : IRequestHandler<AddRecipeCollec
     }
     public async Task<RecipeCollectionResponse> Handle(AddRecipeCollectionCommand request, CancellationToken cancellationToken)
     {
+        var existingCollection = await _context.RecipeCollections
+            .Where(x => x.CollectionName == request.CollectionName)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (existingCollection != null)
+            return null;
+
         var collection = new RecipeCollection()
         {
             UserId = request.UserId,
