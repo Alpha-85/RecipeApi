@@ -20,6 +20,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<RecipeDay> RecipeDays { get; set; }
     public DbSet<RecipeInformation> RecipeInformation { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<WeekDay> WeekDays { get; set; }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
