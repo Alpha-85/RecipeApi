@@ -1,4 +1,5 @@
-﻿using Application.UnitTests.Helpers;
+﻿
+using Application.UnitTests.Helpers;
 using FluentAssertions;
 using RecipeApi.Application.Common.Models;
 using RecipeApi.Application.Recipes.Queries.GetRecipeCollections;
@@ -9,15 +10,15 @@ using Xunit;
 
 namespace Application.UnitTests.Handlers;
 
-public class GetRecipeCollectionDetailsHandlerTests
+public class GetRecipeCollectionHandlerTests
 {
     [Fact]
     public async Task HandlerShouldNotThrowException()
     {
         var applicationDbContext = DbContextHelper.GetApplicationDbContext();
         var mapper = AutoMapperHelper.GetAutoMapper();
-        var handler = new GetRecipeCollectionDetailsHandler(applicationDbContext, mapper);
-        var request = new GetRecipeDayQuery(1, 1);
+        var handler = new GetRecipeCollectionHandler(applicationDbContext, mapper);
+        var request = new GetRecipeCollectionQuery(1);
 
         var exception = await Record.ExceptionAsync(() => handler.Handle(request, CancellationToken.None));
 
@@ -25,17 +26,17 @@ public class GetRecipeCollectionDetailsHandlerTests
     }
 
     [Fact]
-    public async Task HandlerShouldReturnEmptyListOfRecipeDays()
+    public async Task HandlerShouldReturnEmptyCollection()
     {
         var mapper = AutoMapperHelper.GetAutoMapper();
         var applicationDbContext = DbContextHelper.GetApplicationDbContext();
-        var handler = new GetRecipeCollectionDetailsHandler(applicationDbContext, mapper);
-        var request = new GetRecipeDayQuery(1, 99999999);
+        var handler = new GetRecipeCollectionHandler(applicationDbContext, mapper);
+        var request = new GetRecipeCollectionQuery(999);
 
         var result = await handler.Handle(request, CancellationToken.None);
 
 
-        result.Should().BeOfType<List<RecipeDayResponse>>();
+        result.Should().BeOfType<List<RecipeCollectionResponse>>();
         result.Should().HaveCount(0);
     }
 
@@ -45,16 +46,15 @@ public class GetRecipeCollectionDetailsHandlerTests
         var user = UserObjectBuilder.GetDefaultUser();
         var mapper = AutoMapperHelper.GetAutoMapper();
         var applicationDbContext = DbContextHelper.GetApplicationDbContext();
-        var handler = new GetRecipeCollectionDetailsHandler(applicationDbContext, mapper);
-        var request = new GetRecipeDayQuery(1, 1);
+        var handler = new GetRecipeCollectionHandler(applicationDbContext, mapper);
+        var request = new GetRecipeCollectionQuery(1);
 
         applicationDbContext.Add(user);
         await applicationDbContext.SaveChangesAsync();
         var result = await handler.Handle(request, CancellationToken.None);
 
 
-        result.Should().BeOfType<List<RecipeDayResponse>>();
+        result.Should().BeOfType<List<RecipeCollectionResponse>>();
         result.Should().HaveCountGreaterOrEqualTo(1);
     }
-
 }
