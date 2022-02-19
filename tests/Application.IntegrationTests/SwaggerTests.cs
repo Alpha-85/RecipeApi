@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Linq;
-using System.Threading.Tasks;
 using WebAppApi;
 using Xunit;
 
@@ -13,7 +12,7 @@ namespace Application.IntegrationTests;
 public class SwaggerTests
 {
     [Fact]
-    public Task TestSwagger()
+    public void TestSwagger()
     {
         var server = Host.CreateDefaultBuilder()
             .ConfigureWebHostDefaults(options => { options.UseStartup<Startup>(); })
@@ -26,7 +25,7 @@ public class SwaggerTests
         swagger.Should().NotBeNull();
         swagger.Paths.Any().Should().BeTrue();
         swagger.Components.Schemas.Should().NotBeNull();
-        return Task.CompletedTask;
+
     }
 
 }
