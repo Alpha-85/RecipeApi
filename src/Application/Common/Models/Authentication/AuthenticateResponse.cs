@@ -1,9 +1,10 @@
 ﻿
 
+using System.Diagnostics.CodeAnalysis;
 using RecipeApi.Domain.Entities;
 
 namespace RecipeApi.Application.Common.Models.Authentication;
-
+[ExcludeFromCodeCoverage]
 public class AuthenticateResponse
 {
     public int Id { get; set; }

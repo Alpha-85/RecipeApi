@@ -1,8 +1,9 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 using RecipeApi.Domain.Enums;
 
 namespace RecipeApi.Application.Common.Models;
-
+[ExcludeFromCodeCoverage]
 public class RecipeInformationViewModel
 {
     [JsonPropertyName("recipeName")]
