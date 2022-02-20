@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 
 namespace RecipeApi.Application.Common.Models.Authentication;
-
+[ExcludeFromCodeCoverage]
 public class AuthenticateRequest
 {
     [Required]

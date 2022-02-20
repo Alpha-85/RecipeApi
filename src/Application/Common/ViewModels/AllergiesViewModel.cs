@@ -1,6 +1,8 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace RecipeApi.Application.Common.Models;
+[ExcludeFromCodeCoverage]
 [Serializable]
 public class AllergiesViewModel
 {

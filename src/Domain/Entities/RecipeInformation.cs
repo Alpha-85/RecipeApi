@@ -1,6 +1,8 @@
 ﻿
-namespace RecipeApi.Domain.Entities;
+using System.Diagnostics.CodeAnalysis;
 
+namespace RecipeApi.Domain.Entities;
+[ExcludeFromCodeCoverage]
 public class RecipeInformation : AuditableEntity
 {
     public int Id { get; set; }
