@@ -52,4 +52,32 @@ public class MemoryCacheServiceTests
 
     }
 
+    [Fact]
+    public async Task ExistingIMemoryCacheListShouldBeRetrieved()
+    {
+        var spoonAdapter = Substitute.For<ISpoonAdapter>();
+        var memory = GetMemoryCache();
+        var sut = new MemoryCacheService(memory, spoonAdapter);
+        var recipes = RequestObjectBuilder.GetRecipes();
+        const string query = "beef";
+        const PreferenceType category = PreferenceType.Beef;
+
+        var result = await sut.GetCachedRecipes(category, query);
+
+        result.Should().BeOfType<List<Recipe>>();
+        result.Count.Should().Be(1);
+        result.Should().BeEquivalentTo(recipes);
+    }
+
+
+    private IMemoryCache GetMemoryCache()
+    {
+        var cache = new MemoryCache(new MemoryCacheOptions());
+        var recipes = RequestObjectBuilder.GetRecipes();
+
+        cache.Set(PreferenceType.Beef, recipes);
+
+        return cache;
+    }
+
 }
