@@ -1,6 +1,4 @@
-﻿
-using System;
-using Application.UnitTests.Helpers;
+﻿using Application.UnitTests.Helpers;
 using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
 using NSubstitute;
@@ -70,7 +68,7 @@ public class MemoryCacheServiceTests
     }
 
 
-    private IMemoryCache GetMemoryCache()
+    private static IMemoryCache GetMemoryCache()
     {
         var cache = new MemoryCache(new MemoryCacheOptions());
         var recipes = RequestObjectBuilder.GetRecipes();
