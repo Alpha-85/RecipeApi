@@ -42,7 +42,7 @@ public class UsersController : ControllerBase
         if (response is null)
             return NotFound();
 
-        SetTokenCookie(response.RefreshToken);
+        //SetTokenCookie(response.RefreshToken);
 
         return Ok(response);
     }
@@ -84,7 +84,6 @@ public class UsersController : ControllerBase
 
     private void SetTokenCookie(string token)
     {
-        // append cookie with refresh token to the http response
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
