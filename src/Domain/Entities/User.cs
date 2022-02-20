@@ -1,8 +1,9 @@
 ﻿
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace RecipeApi.Domain.Entities;
-
+[ExcludeFromCodeCoverage]
 public class User : AuditableEntity
 {
     public int Id { get; set; }

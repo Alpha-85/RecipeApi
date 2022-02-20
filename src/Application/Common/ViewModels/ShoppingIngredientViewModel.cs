@@ -1,5 +1,7 @@
-﻿namespace RecipeApi.Application.Common.ViewModels;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace RecipeApi.Application.Common.ViewModels;
+[ExcludeFromCodeCoverage]
 public class ShoppingIngredientViewModel
 {
     public string Name { get; set; }

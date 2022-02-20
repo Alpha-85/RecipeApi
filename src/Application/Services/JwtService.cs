@@ -20,7 +20,7 @@ public class JwtService : IJwtService
         _appSettings = appSettings.Value;
     }
 
-    public async Task<string> GenerateJwtToken(User user,CancellationToken cancellationToken)
+    public async Task<string> GenerateJwtToken(User user, CancellationToken cancellationToken)
     {
         // gör en ny token som håller i 15 minuter
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -32,17 +32,17 @@ public class JwtService : IJwtService
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
-                Expires = DateTime.UtcNow.AddMinutes(3),
+                Expires = DateTime.UtcNow.AddMinutes(15),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var newToken = tokenHandler.CreateToken(tokenDescriptor);
             token = tokenHandler.WriteToken(newToken);
         }, cancellationToken);
-       
+
         return token;
     }
 
-    public async Task<int?> ValidateJwtToken(string token,CancellationToken cancellationToken)
+    public async Task<int?> ValidateJwtToken(string token, CancellationToken cancellationToken)
     {
         if (token is null)
             return null;
@@ -65,13 +65,13 @@ public class JwtService : IJwtService
             var jwtToken = (JwtSecurityToken)validatedToken;
             userId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
 
-        },cancellationToken);
+        }, cancellationToken);
 
         return userId;
 
     }
 
-    public async Task<RefreshToken> GenerateRefreshToken(string ipAddress,CancellationToken cancellationToken)
+    public async Task<RefreshToken> GenerateRefreshToken(string ipAddress, CancellationToken cancellationToken)
     {
         var refreshToken = new RefreshToken();
 
@@ -85,13 +85,13 @@ public class JwtService : IJwtService
             refreshToken.Expires = DateTime.UtcNow.AddDays(7);
             refreshToken.Created = DateTime.UtcNow;
             refreshToken.CreatedByIp = ipAddress;
-           
 
-        },cancellationToken);
 
-        if(!Task.CompletedTask.IsCompleted)
-        return null;
-        
+        }, cancellationToken);
+
+        if (!Task.CompletedTask.IsCompleted)
+            return null;
+
         return refreshToken;
     }
 }

@@ -1,4 +1,5 @@
 ﻿
+using System.Diagnostics.CodeAnalysis;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using RecipeApi.Application.Adapters;
@@ -9,7 +10,7 @@ using RecipeApi.Application.Services;
 using System.Reflection;
 
 namespace RecipeApi.Application;
-
+[ExcludeFromCodeCoverage]
 public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
