@@ -1,6 +1,8 @@
 ﻿
-namespace RecipeApi.Domain.Common;
+using System.Diagnostics.CodeAnalysis;
 
+namespace RecipeApi.Domain.Common;
+[ExcludeFromCodeCoverage]
 public abstract class AuditableEntity
 {
     public DateTime Created { get; set; }

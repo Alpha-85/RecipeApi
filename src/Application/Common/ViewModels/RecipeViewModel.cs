@@ -1,9 +1,11 @@
 ﻿
+using System.Diagnostics.CodeAnalysis;
 using RecipeApi.Application.Common.Models.SpoonResponse;
 using System.Text.Json.Serialization;
 
 namespace RecipeApi.Application.Common.Models;
 
+[ExcludeFromCodeCoverage]
 public class RecipeViewModel
 {
     [JsonPropertyName("vegetarian")]

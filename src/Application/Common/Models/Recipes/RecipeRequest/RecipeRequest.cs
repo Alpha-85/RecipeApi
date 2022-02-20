@@ -1,8 +1,9 @@
 ﻿using RecipeApi.Domain.Enums;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
-using RecipeApi.Application.Common.Models;
 
 namespace RecipeApi.Application.Common.Models.Recipes;
+[ExcludeFromCodeCoverage]
 [Serializable]
 public class RecipeRequest
 {

@@ -1,8 +1,9 @@
 ﻿
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace RecipeApi.Application.Common.Models.SpoonResponse;
-
+[ExcludeFromCodeCoverage]
 [Serializable]
 public class Measures
 {
@@ -12,6 +13,7 @@ public class Measures
     [JsonPropertyName("metric")]
     public Metric Metric { get; set; }
 }
+[ExcludeFromCodeCoverage]
 public class Us
 {
     [JsonPropertyName("amount")]
@@ -23,7 +25,7 @@ public class Us
     [JsonPropertyName("unitLong")]
     public string UnitLong { get; set; }
 }
-
+[ExcludeFromCodeCoverage]
 public class Metric
 {
     [JsonPropertyName("amount")]
