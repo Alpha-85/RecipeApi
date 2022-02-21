@@ -13,11 +13,10 @@ public class SpoonAdapter : ISpoonAdapter
     private readonly ILogger<SpoonAdapter> _logger;
     private readonly SpoonApiSettings _spoonApiSettings;
 
-    public SpoonAdapter(HttpClient httpClient, ILogger<SpoonAdapter> logger, SpoonApiSettings settings, IOptions<SpoonApiSettings> options)
+    public SpoonAdapter(HttpClient httpClient, ILogger<SpoonAdapter> logger, IOptions<SpoonApiSettings> options)
     {
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _spoonApiSettings = settings ?? throw new ArgumentNullException(nameof(settings));
         _spoonApiSettings = options.Value ?? throw new ArgumentNullException(nameof(options));
     }
 
