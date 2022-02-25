@@ -35,7 +35,7 @@ public class MemoryCacheServiceTests
     {
         var memory = Substitute.For<IMemoryCache>();
         var spoonAdapter = Substitute.For<ISpoonAdapter>();
-        var recipes = RequestObjectBuilder.GetRecipes();
+        var recipes = RecipeObjectBuilder.GetListWithSingleRecipe();
         const string query = "beef";
         var category = PreferenceType.Beef;
         var sut = new MemoryCacheService(memory, spoonAdapter);
@@ -56,7 +56,7 @@ public class MemoryCacheServiceTests
         var spoonAdapter = Substitute.For<ISpoonAdapter>();
         var memory = GetMemoryCache();
         var sut = new MemoryCacheService(memory, spoonAdapter);
-        var recipes = RequestObjectBuilder.GetRecipes();
+        var recipes = RecipeObjectBuilder.GetListWithSingleRecipe();
         const string query = "beef";
         const PreferenceType category = PreferenceType.Beef;
 
@@ -71,7 +71,7 @@ public class MemoryCacheServiceTests
     private static IMemoryCache GetMemoryCache()
     {
         var cache = new MemoryCache(new MemoryCacheOptions());
-        var recipes = RequestObjectBuilder.GetRecipes();
+        var recipes = RecipeObjectBuilder.GetListWithSingleRecipe();
 
         cache.Set(PreferenceType.Beef, recipes);
 
