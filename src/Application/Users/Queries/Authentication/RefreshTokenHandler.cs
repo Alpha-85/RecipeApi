@@ -1,9 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Application.Common.Models.Authentication;
-using RecipeApi.Application.Common.Settings;
 using RecipeApi.Domain.Entities;
 
 namespace RecipeApi.Application.Users.Queries.Authentication;
@@ -12,14 +10,12 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenQuery, Authentica
 {
     private readonly IApplicationDbContext _context;
     private readonly IJwtService _jwtService;
-    private readonly AppSettings _appSettings;
     private readonly IUserService _userService;
 
-    public RefreshTokenHandler(IApplicationDbContext context, IJwtService jwtService, IOptions<AppSettings> appSettings,IUserService userService)
+    public RefreshTokenHandler(IApplicationDbContext context, IJwtService jwtService, IUserService userService)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
-        _appSettings = appSettings.Value ?? throw new ArgumentNullException(nameof(_appSettings));
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
     }
     public async Task<AuthenticateResponse> Handle(RefreshTokenQuery request, CancellationToken cancellationToken)
@@ -61,7 +57,7 @@ public class RefreshTokenHandler : IRequestHandler<RefreshTokenQuery, Authentica
             .Include(r => r.RefreshTokens)
             .FirstOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
 
-        if(user is null)
+        if (user is null)
             return null;
 
         return user;

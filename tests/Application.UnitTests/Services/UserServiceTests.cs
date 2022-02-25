@@ -7,8 +7,6 @@ using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Application.Common.Settings;
 using RecipeApi.Application.Services;
 using RecipeApi.Domain.Entities;
-using System;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -34,7 +32,7 @@ public class UserServiceTests
     }
 
     [Fact]
-    public void  UserServiceShouldRemoveOldRefreshTokens()
+    public void UserServiceShouldRemoveOldRefreshTokens()
     {
         var appSettings = Substitute.For<IOptions<AppSettings>>();
         var jwtService = Substitute.For<IJwtService>();
@@ -70,9 +68,9 @@ public class UserServiceTests
         var jwtService = Substitute.For<IJwtService>();
         appSettings.Value.Returns(SettingsHelper.GetAppSettings());
         var value = appSettings.Value;
-        var refreshToken = GetRefreshToken(value.Secret);
+        var refreshToken = AuthenticateHelper.GetRefreshToken();
 
-        jwtService.GenerateRefreshToken("192.168.0.1", CancellationToken.None).Returns(GetRefreshToken(value.Secret));
+        jwtService.GenerateRefreshToken("192.168.0.1", CancellationToken.None).Returns(AuthenticateHelper.GetRefreshToken());
 
         var sut = new UserService(jwtService, appSettings);
 
@@ -82,20 +80,4 @@ public class UserServiceTests
         result.RevokedByIp.Should().NotBeSameAs(refreshToken.RevokedByIp);
     }
 
-    private static RefreshToken GetRefreshToken(string secret)
-    {
-        byte[] bytes = new byte[64];
-        var rng = RandomNumberGenerator.Create();
-        rng.GetBytes(bytes);
-
-        var refreshToken = new RefreshToken
-        {
-            Token = Convert.ToBase64String(bytes),
-            Expires = DateTime.MinValue,
-            Created = DateTime.MinValue,
-            CreatedByIp = "192.168.0.133"
-        };
-
-        return refreshToken;
-    }
 }
