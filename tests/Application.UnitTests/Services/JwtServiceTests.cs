@@ -22,7 +22,7 @@ public class JwtServiceTests
     public async Task JwtServiceShouldNotThrowException()
     {
         var appSettings = Substitute.For<IOptions<AppSettings>>();
-        appSettings.Value.Returns(GetAppSettings());
+        appSettings.Value.Returns(SettingsHelper.GetAppSettings());
         var user = UserObjectBuilder.GetDefaultUser();
 
         var sut = new JwtService(appSettings);
@@ -37,7 +37,7 @@ public class JwtServiceTests
     public async Task JwtServiceShouldGenerateNewToken()
     {
         var appSettings = Substitute.For<IOptions<AppSettings>>();
-        appSettings.Value.Returns(GetAppSettings());
+        appSettings.Value.Returns(SettingsHelper.GetAppSettings());
         var user = UserObjectBuilder.GetDefaultUser();
 
         var sut = new JwtService(appSettings);
@@ -51,7 +51,7 @@ public class JwtServiceTests
     public async Task JwtServiceWithInvalidTokenShouldReturnNull()
     {
         var appSettings = Substitute.For<IOptions<AppSettings>>();
-        appSettings.Value.Returns(GetAppSettings());
+        appSettings.Value.Returns(SettingsHelper.GetAppSettings());
 
         var sut = new JwtService(appSettings);
 
@@ -64,7 +64,7 @@ public class JwtServiceTests
     public async Task JwtServiceShouldValidateToken()
     {
         var appSettings = Substitute.For<IOptions<AppSettings>>();
-        appSettings.Value.Returns(GetAppSettings());
+        appSettings.Value.Returns(SettingsHelper.GetAppSettings());
         var value = appSettings.Value;
 
         var sut = new JwtService(appSettings);
@@ -79,24 +79,13 @@ public class JwtServiceTests
     public async Task JwtServiceShouldReturnNewRefreshToken()
     {
         var appSettings = Substitute.For<IOptions<AppSettings>>();
-        appSettings.Value.Returns(GetAppSettings());
+        appSettings.Value.Returns(SettingsHelper.GetAppSettings());
         var sut = new JwtService(appSettings);
         
         var result = await sut.GenerateRefreshToken("192.168.0.1", CancellationToken.None);
 
         result.Should().NotBe(null);
         result.Should().BeOfType<RefreshToken>();
-    }
-
-    private static AppSettings GetAppSettings()
-    {
-        var appSetting = new AppSettings()
-        {
-            Secret = "d3fl423d3fl423d3fl423d3fl423d3fl423d3fl423d3fl423d3fl423d3fl423d3fl423d3fl423d3fl423",
-            RefreshTokenTTL = 7
-        };
-
-        return appSetting;
     }
 
     private static string GetNewToken(string secret)
