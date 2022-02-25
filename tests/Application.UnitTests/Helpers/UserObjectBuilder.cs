@@ -69,4 +69,53 @@ public static class UserObjectBuilder
         };
         return user;
     }
+
+    public static User GetUserForAuth()
+    {
+        var user = new User()
+        {
+            Id = 1,
+            UserName = "Alfons",
+            PasswordHash = "",
+            RefreshTokens = new List<RefreshToken>(),
+
+            RecipeCollections = new List<RecipeCollection>()
+            {
+                new()
+                {
+                    Id = 1,
+                    UserId = 1,
+                    CollectionName = "AlfonsFavvisar",
+                    RecipeDays = new List<RecipeDay>()
+                    {
+                        new()
+                        {
+                            Id = 1,
+                            RecipeCollectionId = 1,
+                            WeekdayId = 1,
+                            Recipes = new List<RecipeInformation>()
+                            {
+                                new()
+                                {
+                                    Created = DateTime.MinValue,
+                                    LastModified = null,
+                                    Id = 1,
+                                    RecipeDayId = 1,
+                                    RecipeId = 44321,
+                                    RecipeName = "",
+                                    RecipeUrl = "",
+                                    ReadyInMinutes = 30,
+                                    Image = "",
+                                    MealType = MealType.Breakfast
+                                }
+                            }
+                        }
+                    }
+
+                }
+            },
+
+        };
+        return user;
+    }
 }

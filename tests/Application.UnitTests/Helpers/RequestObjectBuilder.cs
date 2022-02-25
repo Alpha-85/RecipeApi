@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using RecipeApi.Application.Common.Models;
-using RecipeApi.Application.Common.Models.SpoonResponse;
+﻿using RecipeApi.Application.Common.Models;
+using RecipeApi.Application.Common.Models.Recipes;
 using RecipeApi.Application.Common.Models.UserRecipes;
 using RecipeApi.Domain.Enums;
 
@@ -30,55 +29,40 @@ public static class RequestObjectBuilder
         return request;
     }
 
-    public static List<Recipe> GetRecipes()
+    public static RecipeRequest GetRecipeRequest()
     {
-        var recipes = new List<Recipe>();
-
-        recipes.Add(new Recipe
+        var request = new RecipeRequest
         {
-            Vegetarian = false,
-            Vegan = false,
-            GlutenFree = false,
-            DairyFree = false,
-            VeryHealthy = false,
-            Cheap = false,
-            VeryPopular = false,
-            Sustainable = false,
-            WeightWatcherSmartPoints = 0,
-            Gaps = "",
-            LowFodmap = false,
-            AggregateLikes = 0,
-            SpoonacularScore = 0,
-            HealthScore = 0,
-            CreditsText = "",
-            License = "",
-            SourceName = "",
-            PricePerServing = 0,
-            ExtendedIngredients = new List<ExtendedIngredient>
+            MealType = MealType.Dinner,
+            Preference = PreferenceType.Beef,
+            Allergies = new AllergiesViewModel
             {
-                Capacity = 1
+                IsMilk = false,
+                IsGluten = false,
+                IsNuts = false,
+                IsEgg = false,
+                IsShellfish = false
             },
-            Id = 0,
-            Title = "",
-            ReadyInMinutes = 0,
-            Servings = 0,
-            SourceUrl = "",
-            Image = "",
-            ImageType = "",
-            Summary = "",
-            Cuisines = new List<string>(){""},
-            DishTypes = new List<string>(){""},
-            Diets = new List<string>(){""},
-            Occasions = new List<object>(),
-            Instructions = "",
-            AnalyzedInstructions = new List<AnalyzedInstruction>
-            {
-                Capacity = 1
-            },
-            OriginalId = new object(),
-            SpoonacularSourceUrl = ""
-        });
+        };
 
-        return recipes;
+        return request;
+    }
+    public static RecipeRequest GetDessertRecipeRequest()
+    {
+        var request = new RecipeRequest
+        {
+            MealType = MealType.Dessert,
+            Preference = PreferenceType.Dessert,
+            Allergies = new AllergiesViewModel
+            {
+                IsMilk = true,
+                IsGluten = false,
+                IsNuts = false,
+                IsEgg = true,
+                IsShellfish = false
+            },
+        };
+
+        return request;
     }
 }
