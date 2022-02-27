@@ -36,7 +36,7 @@ public class MappingProfile : Profile
 
         CreateMap<RecipeDay, RecipeDayResponse>()
             .ForMember(dest => dest.Weekday,
-                m => m.MapFrom(src => src.Weekday.DayOfWeek.ToString()))
+                m => m.MapFrom(src => src.Weekday.DayOfWeek))
             .ForMember(dest => dest.RecipesList,
                 opt => opt.MapFrom(
                     src => src.Recipes.Select(r => r)));
