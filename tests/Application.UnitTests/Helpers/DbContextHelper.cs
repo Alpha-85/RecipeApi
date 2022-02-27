@@ -18,7 +18,7 @@ public static class DbContextHelper
 
         foreach (var day in weekDays)
         {
-            applicationDbContext.WeekDays.Add(new WeekDay() { DayOfWeek = day });
+            applicationDbContext.WeekDay.Add(new WeekDay() { DayOfWeek = day });
         }
 
         applicationDbContext.SaveChangesAsync();
