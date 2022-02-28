@@ -30,8 +30,7 @@ public class AddRecipeCommandHandler : IRequestHandler<AddRecipeCommand, bool>
 
         if (recipeDay.Recipes != null && recipeDay.Recipes.Any(r => r.MealType == mealType)) return false;
 
-        if (recipeDay.Recipes == null)
-            await AddRecipe(recipeDay, request, cancellationToken);
+        await AddRecipe(recipeDay, request, cancellationToken);
 
         return true;
     }
