@@ -200,7 +200,7 @@ public static class RecipeObjectBuilder
         return recipes;
     }
 
-    public static List<Recipe> GetListWithFiveRecipes()
+    public static List<Recipe> GetListWithSixRecipes()
     {
         var recipes = new List<Recipe>();
 
@@ -284,7 +284,7 @@ public static class RecipeObjectBuilder
             Vegetarian = false,
             Vegan = false,
             GlutenFree = false,
-            DairyFree = false,
+            DairyFree = true,
             VeryHealthy = false,
             Cheap = false,
             VeryPopular = false,
@@ -359,7 +359,7 @@ public static class RecipeObjectBuilder
             Vegetarian = false,
             Vegan = false,
             GlutenFree = false,
-            DairyFree = false,
+            DairyFree = true,
             VeryHealthy = false,
             Cheap = false,
             VeryPopular = false,
@@ -376,7 +376,37 @@ public static class RecipeObjectBuilder
             PricePerServing = 0,
             ExtendedIngredients = new List<ExtendedIngredient>
             {
-                Capacity = 1
+                new()
+                {
+                    Id = 1,
+                    Aisle = "",
+                    Image = "",
+                    Consistency = "",
+                    Name = "",
+                    NameClean = "",
+                    Original = "",
+                    OriginalString = "",
+                    OriginalName = "",
+                    Amount = 1,
+                    Unit = "",
+                    Meta = new List<string>(){""},
+                    MetaInformation = new List<string>(){""},
+                    Measures = new Measures
+                    {
+                        Us = new Us
+                        {
+                            Amount = 1,
+                            UnitShort = "",
+                            UnitLong = ""
+                        },
+                        Metric = new Metric
+                        {
+                            Amount = 1,
+                            UnitShort = "",
+                            UnitLong = ""
+                        }
+                    }
+                }
             },
             Id = 0,
             Title = "",
@@ -403,7 +433,7 @@ public static class RecipeObjectBuilder
             Vegetarian = false,
             Vegan = false,
             GlutenFree = false,
-            DairyFree = false,
+            DairyFree = true,
             VeryHealthy = false,
             Cheap = false,
             VeryPopular = false,
@@ -420,7 +450,37 @@ public static class RecipeObjectBuilder
             PricePerServing = 0,
             ExtendedIngredients = new List<ExtendedIngredient>
             {
-                Capacity = 1
+                new()
+                {
+                    Id = 1,
+                    Aisle = "",
+                    Image = "",
+                    Consistency = "",
+                    Name = "",
+                    NameClean = "",
+                    Original = "",
+                    OriginalString = "",
+                    OriginalName = "",
+                    Amount = 1,
+                    Unit = "",
+                    Meta = new List<string>(){""},
+                    MetaInformation = new List<string>(){""},
+                    Measures = new Measures
+                    {
+                        Us = new Us
+                        {
+                            Amount = 1,
+                            UnitShort = "",
+                            UnitLong = ""
+                        },
+                        Metric = new Metric
+                        {
+                            Amount = 1,
+                            UnitShort = "",
+                            UnitLong = ""
+                        }
+                    }
+                }
             },
             Id = 0,
             Title = "",
@@ -446,7 +506,7 @@ public static class RecipeObjectBuilder
         {
             Vegetarian = false,
             Vegan = false,
-            GlutenFree = false,
+            GlutenFree = true,
             DairyFree = false,
             VeryHealthy = false,
             Cheap = false,
@@ -464,7 +524,112 @@ public static class RecipeObjectBuilder
             PricePerServing = 0,
             ExtendedIngredients = new List<ExtendedIngredient>
             {
+                new()
+                {
+                    Id = 1,
+                    Aisle = "",
+                    Image = "",
+                    Consistency = "",
+                    Name = "",
+                    NameClean = "",
+                    Original = "",
+                    OriginalString = "",
+                    OriginalName = "",
+                    Amount = 1,
+                    Unit = "",
+                    Meta = new List<string>(){""},
+                    MetaInformation = new List<string>(){""},
+                    Measures = new Measures
+                    {
+                        Us = new Us
+                        {
+                            Amount = 1,
+                            UnitShort = "",
+                            UnitLong = ""
+                        },
+                        Metric = new Metric
+                        {
+                            Amount = 1,
+                            UnitShort = "",
+                            UnitLong = ""
+                        }
+                    }
+                }
+            },
+            Id = 0,
+            Title = "",
+            ReadyInMinutes = 0,
+            Servings = 0,
+            SourceUrl = "",
+            Image = "",
+            ImageType = "",
+            Summary = "",
+            Cuisines = new List<string>() { "" },
+            DishTypes = new List<string>() { "" },
+            Diets = new List<string>() { "" },
+            Occasions = new List<object>(),
+            Instructions = "",
+            AnalyzedInstructions = new List<AnalyzedInstruction>
+            {
                 Capacity = 1
+            },
+            OriginalId = new object(),
+            SpoonacularSourceUrl = ""
+        });
+
+        recipes.Add(new Recipe
+        {
+            Vegetarian = false,
+            Vegan = false,
+            GlutenFree = false,
+            DairyFree = true,
+            VeryHealthy = false,
+            Cheap = false,
+            VeryPopular = false,
+            Sustainable = false,
+            WeightWatcherSmartPoints = 0,
+            Gaps = "",
+            LowFodmap = false,
+            AggregateLikes = 0,
+            SpoonacularScore = 0,
+            HealthScore = 0,
+            CreditsText = "",
+            License = "",
+            SourceName = "",
+            PricePerServing = 0,
+            ExtendedIngredients = new List<ExtendedIngredient>
+            {
+                new()
+                {
+                    Id = 1,
+                    Aisle = "",
+                    Image = "",
+                    Consistency = "",
+                    Name = "",
+                    NameClean = "",
+                    Original = "",
+                    OriginalString = "",
+                    OriginalName = "",
+                    Amount = 1,
+                    Unit = "",
+                    Meta = new List<string>(){""},
+                    MetaInformation = new List<string>(){""},
+                    Measures = new Measures
+                    {
+                        Us = new Us
+                        {
+                            Amount = 1,
+                            UnitShort = "",
+                            UnitLong = ""
+                        },
+                        Metric = new Metric
+                        {
+                            Amount = 1,
+                            UnitShort = "",
+                            UnitLong = ""
+                        }
+                    }
+                }
             },
             Id = 0,
             Title = "",

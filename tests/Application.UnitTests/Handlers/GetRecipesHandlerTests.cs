@@ -52,7 +52,7 @@ public class GetRecipesHandlerTests
         var memoryService = Substitute.For<IMemoryCacheService>();
         var handler = new GetRecipesHandler(memoryService, mapper);
         var recipe = new GetRecipesQuery(RequestObjectBuilder.GetDessertRecipeRequest());
-        memoryService.GetCachedRecipes(PreferenceType.Dessert, "dessert").Returns(RecipeObjectBuilder.GetListWithFiveRecipes());
+        memoryService.GetCachedRecipes(PreferenceType.Dessert, "dessert").Returns(RecipeObjectBuilder.GetListWithSixRecipes());
 
         var result = await handler.Handle(recipe, CancellationToken.None);
 
