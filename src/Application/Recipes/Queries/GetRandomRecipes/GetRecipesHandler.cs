@@ -82,8 +82,8 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
 
         if (!string.IsNullOrEmpty(allergies.OtherAllergies))
         {
-            filtered = FilterByOtherAllergies(listToFilter, allergies);
-            return filtered;
+            FilterByOtherAllergies(listToFilter, allergies);
+ 
         }
 
         filtered = listToFilter
