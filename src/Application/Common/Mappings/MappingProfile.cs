@@ -61,11 +61,11 @@ public class MappingProfile : Profile
     private static string AllergiesConcat(bool isEgg, bool isNuts, bool isShellfish)
     {
         var result = new List<string>();
-
+        // "prawn", "shrimp", "crab", "lobster", "squid", "oyster", "scallop"
 
         if (isEgg) result.Add("egg");
         if (isNuts) result.Add("nut");
-        if (isShellfish) result.AddRange(new[] { "prawn", "shrimp", "crab", "lobster", "squid", "oyster", "scallop" });
+        if (isShellfish) result.AddRange(new[] { "prawn", "shrimp", "squid", });
         if (result.Count == 0) result.Add("");
 
         return result.Count > 1 ? string.Join(",", result) : result.First();
