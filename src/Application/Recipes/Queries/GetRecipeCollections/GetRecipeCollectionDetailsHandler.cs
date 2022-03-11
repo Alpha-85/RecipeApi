@@ -25,7 +25,7 @@ public class GetRecipeCollectionDetailsHandler : IRequestHandler<GetRecipeDayQue
             .ThenInclude(x => x.Recipes)
             .Include(x => x.RecipeDays)
             .ThenInclude(x => x.Weekday)
-            .SelectMany(x => x.RecipeDays)
+            .SelectMany(x => x.RecipeDays).OrderBy(x => x.WeekdayId)  
             .ToListAsync(cancellationToken);
 
         return details.Select(r => _mapper.Map<RecipeDayResponse>(r)).ToList();
