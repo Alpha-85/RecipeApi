@@ -5,7 +5,7 @@ using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Application.Common.Models.SpoonResponse;
 using RecipeApi.Application.Common.Settings;
 
-namespace RecipeApi.Application.Adapters;
+namespace RecipeApi.Infrastructure.Adapters;
 
 public class SpoonAdapter : ISpoonAdapter
 {

@@ -7,11 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RecipeApi.Application;
-using RecipeApi.Application.Adapters;
-using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Application.Common.Settings;
 using RecipeApi.Infrastructure;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
@@ -40,7 +37,7 @@ namespace WebAppApi
 
             services.AddCors(options =>
             {
-                options.AddPolicy("Alfons", builder => builder.AllowAnyOrigin().AllowAnyHeader().WithMethods("PUT", "DELETE", "GET","POST"));
+                options.AddPolicy("Alfons", builder => builder.AllowAnyOrigin().AllowAnyHeader().WithMethods("PUT", "DELETE", "GET", "POST"));
 
             });
             services.AddMemoryCache();
@@ -97,15 +94,6 @@ namespace WebAppApi
                     ValidateAudience = false
                 };
             });
-
-
-
-            services.AddHttpClient<ISpoonAdapter, SpoonAdapter>(c =>
-            {
-               // c.BaseAddress = new Uri("https://api.spoonacular.com/");
-                c.DefaultRequestHeaders.Add("Accept", "application/.json");
-            });
-
 
         }
 

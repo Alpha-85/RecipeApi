@@ -1,10 +1,9 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Application.Common.Models.SpoonResponse;
 using RecipeApi.Domain.Enums;
 
-namespace RecipeApi.Application.Services;
+namespace RecipeApi.Infrastructure.Services;
 
 public class MemoryCacheService : IMemoryCacheService
 {
