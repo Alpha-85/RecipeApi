@@ -3,7 +3,7 @@ using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Application.Common.Settings;
 using RecipeApi.Domain.Entities;
 
-namespace RecipeApi.Application.Services;
+namespace RecipeApi.Infrastructure.Services;
 
 public class UserService : IUserService
 {

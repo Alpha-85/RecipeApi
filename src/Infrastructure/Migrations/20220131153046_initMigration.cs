@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace RecipeApi.Infrastructure.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class initMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
