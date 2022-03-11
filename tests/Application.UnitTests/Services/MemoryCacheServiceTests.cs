@@ -4,10 +4,10 @@ using Microsoft.Extensions.Caching.Memory;
 using NSubstitute;
 using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Application.Common.Models.SpoonResponse;
-using RecipeApi.Application.Services;
 using RecipeApi.Domain.Enums;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using RecipeApi.Infrastructure.Services;
 using Xunit;
 
 namespace Application.UnitTests.Services;
