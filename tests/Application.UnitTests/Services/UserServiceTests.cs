@@ -5,10 +5,10 @@ using Microsoft.Extensions.Options;
 using NSubstitute;
 using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Application.Common.Settings;
-using RecipeApi.Application.Services;
 using RecipeApi.Domain.Entities;
 using System.Threading;
 using System.Threading.Tasks;
+using RecipeApi.Infrastructure.Services;
 using Xunit;
 
 namespace Application.UnitTests.Services;

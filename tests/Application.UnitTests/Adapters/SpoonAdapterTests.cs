@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
-using RecipeApi.Application.Adapters;
 using RecipeApi.Application.Common.Settings;
 using System.Net.Http;
 using System.Threading.Tasks;
+using RecipeApi.Infrastructure.Adapters;
 using Xunit;
 
 namespace Application.UnitTests.Adapters;

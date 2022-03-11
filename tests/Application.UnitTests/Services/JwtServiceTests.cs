@@ -3,7 +3,6 @@ using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NSubstitute;
-using RecipeApi.Application.Authorization;
 using RecipeApi.Application.Common.Settings;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using RecipeApi.Domain.Entities;
+using RecipeApi.Infrastructure.Services;
 using Xunit;
 
 namespace Application.UnitTests.Services;

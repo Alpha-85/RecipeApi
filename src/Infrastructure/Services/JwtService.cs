@@ -1,14 +1,14 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Application.Common.Settings;
 using RecipeApi.Domain.Entities;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 
-namespace RecipeApi.Application.Authorization;
+namespace RecipeApi.Infrastructure.Services;
 
 
 public class JwtService : IJwtService
