@@ -6,4 +6,5 @@ public interface ISpoonAdapter
 {
     Task<List<Recipe>> GetRandomRecipesAsync(string query);
     Task<List<ExtendedIngredient>> GetRecipeIngredientsAsync(long recipeId);
+    Task<Recipe> GetRecipeAsync(long query);
 }
