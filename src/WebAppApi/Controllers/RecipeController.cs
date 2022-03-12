@@ -30,14 +30,10 @@ public class RecipeController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<RecipeViewModel>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get([FromQuery] RecipeRequest recipeRequest)
     {
 
         var response = await _mediator.Send(new GetRecipesQuery(recipeRequest));
-
-        if (response is null)
-            return NotFound();
 
         return Ok(response);
     }

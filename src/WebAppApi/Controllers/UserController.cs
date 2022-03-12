@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RecipeApi.Application.Common.Interfaces;
 using RecipeApi.Application.Common.Models.Authentication;
 using RecipeApi.Application.Users.Commands;
 using RecipeApi.Application.Users.Queries.Authentication;
@@ -17,10 +18,13 @@ public class UsersController : ControllerBase
 {
 
     private readonly IMediator _mediator;
+    private readonly IIpAddressExtensions _ipAddressExtension;
 
-    public UsersController(IMediator mediator)
+
+    public UsersController(IMediator mediator, IIpAddressExtensions extension)
     {
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _ipAddressExtension = extension ?? throw new ArgumentNullException(nameof(extension));
 
     }
 
@@ -37,7 +41,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> AuthenticateUser(string username, string password)
     {
-        var response = await _mediator.Send(new AuthenticationQuery(username, password, IpAddress()));
+        var response = await _mediator.Send(new AuthenticationQuery(username, password, _ipAddressExtension.IpAddress(HttpContext)));
 
         if (response is null)
             return NotFound();
@@ -57,7 +61,7 @@ public class UsersController : ControllerBase
     [AllowAnonymous]
     [HttpPost("register")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string),StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterUser(string username, string password)
     {
         var response = await _mediator.Send(new AddUserCommand(username, password));
@@ -70,10 +74,10 @@ public class UsersController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("refresh-token")]
-    public async Task<IActionResult> RefreshToken([FromBody]string refreshToken)
+    public async Task<IActionResult> RefreshToken([FromBody] string refreshToken)
     {
 
-        var response = await _mediator.Send(new RefreshTokenQuery(refreshToken, IpAddress()));
+        var response = await _mediator.Send(new RefreshTokenQuery(refreshToken, _ipAddressExtension.IpAddress(HttpContext)));
 
         if (response is null)
             return BadRequest(new { message = "Something is wrong with RefreshToken" });
@@ -92,11 +96,4 @@ public class UsersController : ControllerBase
         Response.Cookies.Append("refreshToken", token, cookieOptions);
     }
 
-    private string IpAddress()
-    {
-        if (Request.Headers.ContainsKey("X-Forwarded-For"))
-            return Request.Headers["X-Forwarded-For"];
-        else
-            return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-    }
 }
