@@ -52,7 +52,7 @@ public class RecipeController : ControllerBase
         return Ok("Saved to db");
     }
 
-    [HttpGet]
+    [HttpGet("oneRecipe")]
     [ProducesResponseType(typeof(RecipeViewModel), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetRecipe([FromQuery] long recipeId)
     {
