@@ -69,8 +69,6 @@ public class SpoonAdapter : ISpoonAdapter
 
     public async Task<Recipe> GetRecipeAsync(long recipeId)
     {
-        var recipe = new Recipe();
-
         var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
             $"https://api.spoonacular.com/recipes/{recipeId}/information?includeNutrition=false&apiKey={_spoonApiSettings.ApiKey}");
         httpRequestMessage.Headers.Add("Accept", "application/json");
@@ -82,7 +80,7 @@ public class SpoonAdapter : ISpoonAdapter
         _logger.LogInformation(json);
         var obj = JsonSerializer.Deserialize<Recipe>(json);
 
-        return obj is not null ? obj : new Recipe();
+        return obj ?? new Recipe();
 
     }
 }
