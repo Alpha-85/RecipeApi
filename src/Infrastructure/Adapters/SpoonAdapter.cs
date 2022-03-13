@@ -66,5 +66,22 @@ public class SpoonAdapter : ISpoonAdapter
 
         return obj is not null ? obj.ExtendedIngredients : new List<ExtendedIngredient>();
     }
+
+    public async Task<Recipe> GetRecipeAsync(long recipeId)
+    {
+        var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get,
+            $"https://api.spoonacular.com/recipes/{recipeId}/information?includeNutrition=false&apiKey={_spoonApiSettings.ApiKey}");
+        httpRequestMessage.Headers.Add("Accept", "application/json");
+
+        var response = await _httpClient.SendAsync(httpRequestMessage);
+
+        if (!response.IsSuccessStatusCode) return new Recipe();
+        var json = await response?.Content.ReadAsStringAsync();
+        _logger.LogInformation(json);
+        var obj = JsonSerializer.Deserialize<Recipe>(json);
+
+        return obj ?? new Recipe();
+
+    }
 }
 

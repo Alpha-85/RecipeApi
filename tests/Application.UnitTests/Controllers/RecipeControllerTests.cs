@@ -11,6 +11,7 @@ using RecipeApi.Application.Common.Models.UserRecipes;
 using RecipeApi.Application.Recipes.Commands;
 using RecipeApi.Application.Recipes.Queries.GetRandomRecipes;
 using Xunit;
+using RecipeApi.Application.Recipes.Queries.GetRecipe;
 
 namespace Application.UnitTests.Controllers;
 
@@ -75,7 +76,20 @@ public class RecipeControllerTests
 
     }
 
+    [Fact]
+    public async Task ControllerGetRecipeAsyncShouldReturnAStatusCode200()
+    {
+        var mediator = Substitute.For<IMediator>();
+        var logger = Substitute.For<ILogger<RecipeController>>();
+        var sut = new RecipeController(mediator, logger);
+        mediator.Send(Arg.Any<GetRecipeQuery>()).Returns(new RecipeViewModel());
 
+
+        var result = await sut.GetRecipe(1);
+
+        Assert.IsType<OkObjectResult>(result);
+
+    }
 
 
 }

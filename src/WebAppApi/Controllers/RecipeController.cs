@@ -8,6 +8,7 @@ using RecipeApi.Application.Common.Models.Recipes;
 using RecipeApi.Application.Common.Models.UserRecipes;
 using RecipeApi.Application.Recipes.Commands;
 using RecipeApi.Application.Recipes.Queries.GetRandomRecipes;
+using RecipeApi.Application.Recipes.Queries.GetRecipe;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -49,6 +50,16 @@ public class RecipeController : ControllerBase
             return BadRequest("Invalid data/combination");
 
         return Ok("Saved to db");
+    }
+
+    [HttpGet("oneRecipe")]
+    [ProducesResponseType(typeof(RecipeViewModel), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetRecipe([FromQuery] long recipeId)
+    {
+
+        var response = await _mediator.Send(new GetRecipeQuery(recipeId));
+
+        return Ok(response);
     }
 
 }
