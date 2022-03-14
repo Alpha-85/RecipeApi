@@ -7,6 +7,5 @@ public enum MealType
     Lunch,
     Dinner,
     Dessert,
-    FineDinner
 }
 

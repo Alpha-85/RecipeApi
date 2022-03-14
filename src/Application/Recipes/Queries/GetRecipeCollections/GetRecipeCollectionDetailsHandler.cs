@@ -22,12 +22,14 @@ public class GetRecipeCollectionDetailsHandler : IRequestHandler<GetRecipeDayQue
         var details = await _context.RecipeCollections
             .Where(u => u.UserId == request.UserId && u.Id == request.CollectionId)
             .Include(r => r.RecipeDays)
-            .ThenInclude(x => x.Recipes)
+            .ThenInclude(x => x.Recipes.OrderBy(y => y.MealType))
             .Include(x => x.RecipeDays)
             .ThenInclude(x => x.Weekday)
-            .SelectMany(x => x.RecipeDays).OrderBy(x => x.WeekdayId)  
+            .SelectMany(x => x.RecipeDays)
+            .OrderBy(x => x.WeekdayId)
             .ToListAsync(cancellationToken);
 
+        
         return details.Select(r => _mapper.Map<RecipeDayResponse>(r)).ToList();
 
     }
