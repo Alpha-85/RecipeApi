@@ -70,7 +70,6 @@ public class GetRecipesHandler : IRequestHandler<GetRecipesQuery, List<RecipeVie
             MealType.Dessert => 1,
             MealType.Dinner => 2,
             MealType.Lunch => 2,
-            MealType.FineDinner => 2,
             _ => 0
         };
     }
